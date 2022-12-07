@@ -1,0 +1,34 @@
+<?php
+    include_once "db_conn.php";
+    include_once "ResponseStatus.php";
+    $input = $_POST;
+    $outputData = array();
+
+    try{
+        $player_id = $input["player_id"];
+        $password = $input["password"];
+       
+        $query = "SELECT password_hash, player_name FROM player WHERE player_id = ?";
+        $stmt = $db->prepare($query);
+        $stmt -> execute(array($player_id));
+        $result = $stmt->fetchAll();
+        
+        $outputData['state'] = ResponseStatusCode::$LOGINFAILED;
+        $outputData['message'] = "login failed";
+
+        if(count($result) == 1){
+            if(password_verify($password, $result[0]['password_hash'])){
+                session_start();
+                $_SESSION["player_id"] = $player_id;
+                $_SESSION["player_name"] =  $result[0]['player_name'];
+
+                $outputData['state'] = ResponseStatusCode::$OK;
+                $outputData['message'] = "OK";
+            }            
+        }
+    }catch(Exception $e){
+        $outputData['state'] = ResponseStatusCode::$ERROR;
+        $outputData['message'] = $e -> getMessage();
+    }
+    $outputJson = json_encode($outputData);
+    echo $outputJson;

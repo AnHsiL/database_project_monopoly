@@ -1,0 +1,39 @@
+body{
+    display: flex;
+    justify-content: center;
+}
+#player_info{
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(96, 133, 96); 
+    width: 600px;
+    padding: 10px;
+}
+
+#player_info_1{
+    width: 600px;
+    display: flex;
+    justify-content: center;
+}
+
+#charactor_name{
+    text-align: center;
+}
+
+#info_list{
+    padding-left: 30px;
+    padding-top: 70px;
+    font-weight: bold;
+}
+
+img{
+    width: 95%;
+    height: 95%;
+}
+
+#btn{
+    padding-top: 10px;
+}

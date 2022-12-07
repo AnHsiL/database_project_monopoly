@@ -1,0 +1,25 @@
+body{   
+    background-image: url(../1.jpg);
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: 100%;
+}
+.login{
+    margin-top: 50px;
+    width: 400px;
+    padding: 30px;
+    background-color: rgb(255, 255, 255);
+}
+.login .login_btn{
+    display: flex; 
+    justify-content: center;
+}
+.login_btn #btn_login, #btn_register_submit{
+    margin-right: 10px;
+}
+.login_btn .btn{
+    width: 90px;
+}

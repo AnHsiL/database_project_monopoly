@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link  rel="stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+        <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <link rel = "stylesheet" href = "../css/login.css">
+        <script language="JavaScript" type="text/javascript" src="../js/login.js"></script>
+    </head>
+
+    <body>
+        <div class = "login rounded-3">
+            <div style="text-align: center;">
+                <h2>Login</h2>
+                <br>
+            </div>
+            <div class = "mb-3">
+                <label for = "player_id"><h5>帳號:</h5></label>
+                <input type = "text" class = "form-control" id = "player_id" placeholder = "輸入帳號" name = "player_id">
+            </div>
+            <div class = "mb-3">
+                <label for = "password"><h5>密碼:</h5></label>
+                <input type = "password" class = "form-control" id = "password" placeholder = "輸入密碼" name = "password">
+            </div>
+            <br>
+            <div class = "login_btn">
+                <button class = "btn btn-outline-primary" id = "btn_login">登入</button>
+                <button class = "btn btn-outline-dark" id = "btn_request_register">註冊</button> 
+            </div>                
+            <br>
+            <div style="text-align: center;">
+                <a href = "#" style="color: #B0B0B0;">忘記密碼?只好重設帳號囉</a>
+            </div>
+        </div>               
+    </body>
+</html>

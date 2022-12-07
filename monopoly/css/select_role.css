@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --background-color: #b1bdca;
+    --border-color: #7591AD;
+    --text-color: #34495e;
+    --color1: #EC3E27;
+    --color2: #fd79a8;
+    --color3: #0984e3;
+    --color4: #00b894;
+    --color5: #fdcb6e;
+    --color6: #e056fd;
+    --color7: #F97F51;
+    --color8: #BDC581;
+    --a_border_color: #86a3b3;
+    --h2_border_color: #8ea2b8;
+    --a_hover_background_color: #86a3b3;
+    --font_color: #e8f6fd;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: 'Montserrat', sans-serif, Arial, 'Microsoft Yahei';    
+}
+
+.row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.card {
+    position: relative;
+    width: 275px;
+    height: 450px;
+    overflow: hidden;
+    margin: 50px 20px 20px 20px;
+    background-color: var(--border-color);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    box-shadow: 0 0 30px #2c2c2c;
+    color: var(--font_color)
+}
+
+.photo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    border-radius: 0%;
+    overflow: hidden;
+    transition: 0.5s; /* 滑鼠移開後變化0.5s */
+}
+
+.photo::before { 
+    /* 遮罩 */
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to top, #333, transparent);
+}
+
+.card:hover .photo::before{
+    display: none;
+}
+
+.photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card:hover .photo {
+    width: 120px;
+    height: 120px;
+    top: 15px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #111;
+}
+
+h2 {
+    position: absolute;
+    top: 360px;
+    transition: 0.5s;
+}
+
+.card:hover h2 {
+    position: absolute;
+    top: 145px;
+}
+
+h3 {
+    margin-top: 150px;
+    width: 80%;
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--h2_border_color);
+}
+
+p {
+    width: 90%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+#btn_check_role{
+    color: white;
+    background-color: rgb(103, 103, 212);
+    padding: 5px;
+    font-size: 1.5em;
+    border-radius: 10px;
+    border-color: var(--background-color);
+}
+
+.card button{
+    color: var(--font_color);
+    background-color: var(--border-color);
+    text-decoration: none;
+    margin-top: 10px;
+    padding: 7px;
+    border: 1px solid var(--a_border_color);
+    border-radius: 8px;
+    font-size: 1.3em;
+}
+
+.card button:hover {
+    color: #Fff;
+    background-color: var(--a_hover_background_color);
+}
