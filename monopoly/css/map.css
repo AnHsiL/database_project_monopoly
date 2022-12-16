@@ -1,3 +1,15 @@
+body{
+    /* background-color: rgba(0, 0, 0, 0.104);
+    background-blend-mode: multiply; */
+    background-image: url(../3.JPG);
+
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: 100%;
+}
 #map{
     margin-left: 15px;
     position: absolute;

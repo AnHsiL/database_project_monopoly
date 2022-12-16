@@ -10,35 +10,35 @@ $(document).ready(function() {
     let correctRole = 0;
 
     $("#r1").click(function() {
-        $("#list_check_role").html(r1);
+        $("#list_check_role").html("你選擇的是："+r1);
         correctRole = 1;
     });
     $("#r2").click(function() {
-        $("#list_check_role").html(r2);
+        $("#list_check_role").html("你選擇的是："+r2);
         correctRole = 2;
     });
     $("#r3").click(function() {
-        $("#list_check_role").html(r3);
+        $("#list_check_role").html("你選擇的是："+r3);
         correctRole = 3;
     });
     $("#r4").click(function() {
-        $("#list_check_role").html(r4);
+        $("#list_check_role").html("你選擇的是："+r4);
         correctRole = 4;
     });
     $("#r5").click(function() {
-        $("#list_check_role").html(r5);
+        $("#list_check_role").html("你選擇的是："+r5);
         correctRole = 5;
     });
     $("#r6").click(function() {
-        $("#list_check_role").html(r6);
+        $("#list_check_role").html("你選擇的是："+r6);
         correctRole = 6;
     });
     $("#r7").click(function() {
-        $("#list_check_role").html(r7);
+        $("#list_check_role").html("你選擇的是："+r7);
         correctRole = 7;
     });
     $("#r8").click(function() {
-        $("#list_check_role").html(r8);
+        $("#list_check_role").html("你選擇的是："+r8);
         correctRole = 8;
     });
     $("#btn_check_role").click(function() {

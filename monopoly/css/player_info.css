@@ -1,5 +1,11 @@
 body{
+    background-image: url(../2.jpg);
+    background-repeat: repeat;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: 100%;    display: flex;
     justify-content: center;
 }
 #player_info{
@@ -8,9 +14,10 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(96, 133, 96); 
+    background-color: rgba(218, 234, 221, 0.858); 
     width: 600px;
     padding: 10px;
+    color: rgb(0, 50, 9);
 }
 
 #player_info_1{
@@ -20,6 +27,12 @@ body{
 }
 
 #charactor_name{
+    margin: 0px;
+    padding: 10px;
+    background-color: rgba(71, 112, 78, 0.695);
+    color: white;
+    font-size: large;
+    font-weight: bold;
     text-align: center;
 }
 
@@ -28,12 +41,18 @@ body{
     padding-top: 70px;
     font-weight: bold;
 }
+#img{
+    margin: 0px;
+}
 
 img{
+    margin: 0;
     width: 95%;
     height: 95%;
 }
 
 #btn{
-    padding-top: 10px;
+    padding-top: 20px;
 }
+
+.btn:hover{ background-color: rgb(0, 86, 16); }
