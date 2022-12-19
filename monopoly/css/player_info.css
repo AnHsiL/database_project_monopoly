@@ -15,9 +15,10 @@ body{
     justify-content: center;
     align-items: center;
     background-color: rgba(218, 234, 221, 0.858); 
+    color: rgb(0, 50, 9);
     width: 600px;
     padding: 10px;
-    color: rgb(0, 50, 9);
+    
 }
 
 #player_info_1{

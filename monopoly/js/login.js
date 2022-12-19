@@ -24,13 +24,24 @@ function login(player_id, password) {
             console.log(result);
             let res = JSON.parse(result);
             if (res.state == 200) {
-                swal({
-                    title: "登入成功",
-                    text: "",
-                    icon: "success",
-                }).then(function () {
-                    document.location.href = "select_role.html"
-                })
+                if(res.identity == 1){
+                    swal({
+                        title: "登入成功",
+                        text: "",
+                        icon: "success",
+                    }).then(function () {
+                        document.location.href = "select_role.html"
+                    })
+                }else{
+                    swal({
+                        title: "登入成功",
+                        text: "",
+                        icon: "success",
+                    }).then(function () {
+                        document.location.href = "viewAllPlayer.html"
+                    })
+                }
+                
             } 
             else
                 swal("登入失敗，請檢查帳號密碼", "", "error");
