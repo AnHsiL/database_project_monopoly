@@ -10,27 +10,8 @@
         <link rel="stylesheet" href="../css/map.css">
         <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script>
-            /*let l = 
-                        [[1100, 540],[990, 540],[880, 540],[770, 540],[660, 540],[550, 540],[440, 540],[330, 540],
-                        [330, 480],[330, 420],[330, 360],[330, 300],[330, 240], [330, 180],[330, 120],[330, 60],[330, 0],
-                        [440, 0],[550, 0],[660, 0],[770, 0],[880, 0],[990, 0],[1100, 0],
-                        [1100, 60],[1100, 120],[1100, 180],[1100, 240],[1100, 300],[1100, 360],[1100, 420],[1100, 480]
-                        ];
-            $(document).ready(function() {
-                $("#j").click(function(){
-                    console.log("123");
-                    for(let i = 0; i < 32; i++){
-                        setTimeout(function(){ 
-                            $("#a").animate({top:l[i][1], left:l[i][0]}, "slower");
-                        } ,100*i);
-                    }
-                });
-            });*/
-                        
-
-        </script>
-        <!-- <script language="JavaScript" type="text/javascript" src="../js/player_info.js"></script> -->
+        <script src="../js/play_game.js"></script>
+        
     </head>
 
     <body>
@@ -72,8 +53,18 @@
         <img src="../map_png/bb.png" style="width:100px; height:50px; left: 1100px; top: 410px; position:absolute;">
         <img src="../map_png/bb.png" style="width:100px; height:50px; left: 1100px; top: 470px; position:absolute;">
         <img src="../map_png/bb.png" style="width:100px; height:50px; left: 1100px; top: 530px; position:absolute;">
+        <button class = "btn btn-outline-secondary" id = "map_start" style="border-color: rgb(0, 142, 26); width:100px; height:50px; left: 1100px; top: 590px; position:absolute;">start</button>
 
-        <img src="../character_png/角色1掛角.gif" style="width:100px; left: 1100px; top: 530px; position:absolute;" id="a">
+
+        <div class="dice"> 
+            <img class = "pic_dice" src="../dice_png/1.png" style="width:200px; height:200px; left: 610px; top: 200px; position: absolute;">
+        </div>
+        <div> 
+            <button class = "btn btn-outline-secondary" id = "btn_game_start" style="border-color: rgb(0, 142, 26); width:100px; height:50px; left: 660px; top: 410px; position: absolute;">start</button>
+        </div>
+
+
+        <img src="../character_png/角色1掛角.gif" style="width:100px; left: 1100px; top: 530px; position:absolute;" id="game_character">
 
     </body>
 </html>
