@@ -30,7 +30,8 @@ var isComputerTurn = false;
 
 $(document).ready(function() {
     player.location = 0;
-    $("#btn_rolling_dice").click(function(){
+    $("#img_dice").click(function(){
+        console.log("start");
         gameStart();
     });
     $("#btn_exit_game").click(function(){
@@ -40,14 +41,14 @@ $(document).ready(function() {
 
 function gameStart(){
     if(isComputerTurn){
-        swal({
+        swal.fire({
             title: "電腦的回合"
         }).then(() => {
             computerMove(rollongDice());
         });
     }
     else {
-        swal({
+        swal.fire({
             title: "玩家的回合"
         }).then(() => {
             player.location = playerMove(rollongDice());
@@ -81,7 +82,7 @@ function playerMove(step){
                 $("#game_character").animate({top:space[i][1], left:space[i][0]}, "slower");
             }, 1500 + 100 * (i - player.location));
         }
-        swal({
+        swal.fire({
             title: "發錢啦!",
             text: "經過原點獎勵50000元"
         }).then(()=>{
@@ -128,63 +129,47 @@ function computerMove(step){
 
 function blockAction(blockLocation){
     if(notHaveOwner(blockLocation)){
-        swal({
+        swal.fire({
             title: "是否要購買?",
+            showDenyButton: true,
             text: "此地價值為: " + asset[blockLocation][1],
-            buttons: {
-                cancel: {
-                    text: "否",
-                    visible: true
-                },
-                comfirm: {
-                    text: "是",
-                    value: "yes",
-                    visible: true
-                }
-            }
-        }).then((choice) => {
-            if(choice == "yes") {
+            confirmButtonText: '是',
+            denyButtonText: '否',
+        }).then((result) => {
+            if (result.isConfirmed) {
                 if(isAssetLargerThan(player, asset[blockLocation][1]))
                     trade(player, blockLocation);
                 else {
-                    swal({
+                    swal.fire({
                         title: "金額不足以購買",
                         icon: "danger"
                     })
                 }
-            }
+            } 
         });
     }
     else if(isMyBlock(player, blockLocation)){
-        swal({
+        swal.fire({
+            showDenyButton: true,
             title: "是否要升級?",
             text: "升級價格為: " + asset[blockLocation][1] * upgradeRate,
-            buttons: {
-                cancel: {
-                    text: "否",
-                    visible: true
-                },
-                comfirm: {
-                    text: "是",
-                    value: "yes",
-                    visible: true
-                }
-            }
-        }).then((choice) => {
-            if(choice == "yes") {
+            confirmButtonText: '是',
+            denyButtonText: '否'
+        }).then((result) => {
+            if (result.isConfirmed) {
                 if(isAssetLargerThan(player, asset[blockLocation][1] * upgradeRate))
                     upgrade(player, blockLocation);
                 else {
-                    swal({
+                    swal.fire({
                         title: "金額不足以升級",
                         icon: "danger"
                     })
                 }
-            }
+            } 
         });
     }
     else if(isRivalBlock(player, blockLocation)){
-        swal({
+        swal.fire({
             title: "付過路費: " + asset[blockLocation][1] * paymentRate,
         }).then(() => {
             payMoney(player, blockLocation);
@@ -223,21 +208,14 @@ function isAssetLargerThan(person, num){
 }
 
 function gameTerminate(){
-    swal({
+
+    swal.fire({
         title: "確定要離開嗎?",
-        buttons: {
-            cancel: {
-                text: "取消",
-                visible: true
-            },
-            danger: {
-                text: "確認",
-                value: "confirm",
-                visible: true
-            }
-        }
-    }).then((choice) => {
-        if(choice == "confirm") {
+        showDenyButton: true,
+        confirmButtonText: '確認',
+        denyButtonText: '取消',
+    }).then((result) => {
+        if (result.isConfirmed) {
             document.location.href = "../html/player_info.html";
         }
     });
