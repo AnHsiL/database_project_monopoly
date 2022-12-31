@@ -78,7 +78,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200; height:150">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 經過可獲得&nbsp'+passStartMoney+'&nbsp元 <br>\
                             </p>',
@@ -91,7 +91,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200; height:150">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 (說明)<br>\
                             </p>',
@@ -104,7 +104,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200; height:150">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 (說明)<br>\
                             </p>',
@@ -117,7 +117,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200; height:150">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 休息一下吧~ (休息一回合)<br>\
                             </p>',
@@ -127,11 +127,12 @@ $(document).ready(function() {
                 });
             }
             else{
+                // position: absolute; left: 50%; top: 20%;
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="float: left; width:200; height:150">\
-                            <p style="text-align: left; float: right; font-size: 18px; padding:10px" >\
+                            <img src="../map_png/'+asset[i].name+'.png" style="float: left; width:50%; height:50%; ">\
+                            <p style="text-align: left; font-size: 18px; padding:5px; position: absolute; left: 55%; top: 35%;" >\
                                 擁有者:&nbsp;'+ asset[i].owner + '<br>\
                                 當前土地等級:&nbsp;'+ asset[i].grade + '<br>\
                                 當前土地價值:&nbsp;'+ asset[i].price + '<br>\
