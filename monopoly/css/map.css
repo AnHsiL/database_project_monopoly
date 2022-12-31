@@ -25,11 +25,7 @@ body{
     position:absolute; 
     background-color:pink;
 }
-
-.exit{
-    position:absolute;
-    left: 1210px;
-    top: 45px;
+.circle_btn{
     border-radius: 50%;
     color: rgb(102, 0, 0);
     background-color: rgb(252, 216, 216);
@@ -38,4 +34,9 @@ body{
     height: 65px;
     border: none;
     font-weight: bold;
+}
+.exit{
+    position:absolute;
+    left: 1210px;
+    top: 45px;
 }
