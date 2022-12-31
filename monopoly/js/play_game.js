@@ -78,7 +78,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:120px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 經過可獲得&nbsp'+passStartMoney+'&nbsp元 <br>\
                             </p>',
@@ -91,7 +91,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:250px; height:250px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 (說明)<br>\
                             </p>',
