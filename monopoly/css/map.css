@@ -38,5 +38,30 @@ body{
 .exit{
     position:absolute;
     left: 1210px;
-    top: 45px;
+    top: 570px;
+}
+.player1{
+    position:absolute;
+    left: 1210px;
+    top: 430px;
+}
+.player2{
+    position:absolute;
+    left: 1210px;
+    top: 500px;
+}
+
+#player1_info, #player2_info{
+    position: absolute;
+    top: 215px;
+    left: 450px;   
+    font-size: 20px; 
+    text-align: center;
+}
+
+
+.close{
+    font-weight: bold;
+    color:white;
+    font-size: 1em;
 }

@@ -53,11 +53,13 @@ var player = {
     name: "player",
     location: 0,
     asset: 8000000,     //  初始資金 = 8000000
+    house: [],
 }
 var computer = {
     name: "電腦",
     location: 0,
     asset: 8000000,     //  初始資金 = 8000000
+    house: [],
 }
 
 var isComputerTurn = false;
@@ -143,6 +145,20 @@ $(document).ready(function() {
                 });
             }
         });
+        $("#player1").click(function(){
+            let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+            content = b+ "<em>財產</em>:" + player.asset + "萬<br><em>名下房地產</em>:<br>";
+            for(let i = 0; i < player.house.length; i++) content +=  player.house[i] + "<br>";
+            content += "</div>";
+            $("#player1_info").html(content);
+        });
+        $("#player2").click(function(){
+            let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+            content = b+ "<em>財產</em>:" +  + computer.asset + "萬<br><em>名下房地產</em>:<br>";
+            for(let i = 0; i < computer.house.length; i++) content +=  computer.house[i] + "<br>";
+            content += "</div>";
+            $("#player2_info").html(content);
+        });
     }
 });
 
@@ -167,7 +183,6 @@ function gameStart(){
         }, 3900);
     }
 }
-
 function rollongDice(){
     var rollongStep = Math.floor(Math.random() * 6) + 1;
     document.querySelector(".pic_dice").setAttribute("src", "../dice_png/dice.gif");
@@ -176,7 +191,6 @@ function rollongDice(){
     }, 1000);
     return rollongStep;
 }
-
 function playerMove(step){
     for(let i = player.location; i < step + player.location; i++){
         setTimeout(function(){ 
@@ -209,7 +223,6 @@ function playerMove(step){
     isComputerTurn = true;
     return (player.location + step) % space.length;
 }
-
 function computerMove(step){
 
     if(step + computer.location > space.length){
@@ -235,7 +248,6 @@ function computerMove(step){
     computer.location = (computer.location + step) % space.length;
     isComputerTurn = false;
 }
-
 function blockAction(blockLocation){
     if(notHaveOwner(blockLocation)){
         swal.fire({
@@ -316,15 +328,20 @@ function isRivalBlock(owner , currLocation){
 function trade(trader, currLocation){
     trader.asset -= asset[currLocation].price;
     asset[currLocation].owner = trader.name;
+    trader.house.push(asset[currLocation].name);
+    swal.fire("Successfully purchase!!!","Your remain property is " + player.asset + "萬", "success");
+    checkwin();
 }
 function upgrade(trader, currLocation){
     trader.asset -= parseInt(asset[currLocation].price * upgradeRate * asset[currLocation].grade);
     asset[currLocation].grade++;
+    swal.fire("Successfully upgrade!!!","Your remain property is " + player.asset + "萬", "success");
 }
 function payMoney(trader, currLocation){
     if(trader == player){
         player.asset -= parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
         computer.asset += parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
+        swal.fire("This property has been bought!!","Your have to pay " + parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade) +"dollor \n remain property is " + player.asset + "萬");
     }
     else if(trader == computer){
         computer.asset -= parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
@@ -334,7 +351,17 @@ function payMoney(trader, currLocation){
 function isAssetLargerThan(person, num){
     return person.asset >= num;
 }
-
+function checkwin(){
+    if(player.asset < 0){
+        let content2 = "<img src = 'lose.png' style = 'width: 800px;'>"
+        $("body").html(content2);
+    }
+    else if(computer.asset < 0){
+        // $("body").css("background-color", "coral");
+        let content2 = "<img src = 'win.gif' style = 'width: 800px;'>"
+        $("body").html(content2);
+    }
+}
 function gameTerminate(){
 
     swal.fire({
