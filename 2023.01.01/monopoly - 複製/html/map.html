@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Select Role</title>
+        <script src = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link rel="stylesheet" href = "https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/map.css">
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.0/jquery.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> 
+        <script src="../js/play_game.js"></script>
+        <script src="../js/setMap.js"></script>
+        
+    </head>
+
+    <body>
+        <img src="../map_png/start.png" id="block_0" style="width:100px; height:50px; left: 1100px; top: 590px; position:absolute;">
+
+        <img src="../map_png/1.png" id="block_1" style="width:100px; height:50px; left: 990px; top: 590px; position:absolute;">
+        <img src="../map_png/2.png" id="block_2" style="width:100px; height:50px; left: 880px; top: 590px; position:absolute;">
+        <img src="../map_png/2.png" id="block_3"style="width:100px; height:50px; left: 770px; top: 590px; position:absolute;">
+        <img src="../map_png/4.png" id="block_4" style="width:100px; height:50px; left: 660px; top: 590px; position:absolute;">
+        <img src="../map_png/5.png" id="block_5" style="width:100px; height:50px; left: 550px; top: 590px; position:absolute;">
+        <img src="../map_png/6.png" id="block_6" style="width:100px; height:50px; left: 440px; top: 590px; position:absolute;">
+        <img src="../map_png/7.png" id="block_7" style="width:100px; height:50px; left: 330px; top: 590px; position:absolute;">
+
+        <img src="../map_png/bb.png" id="block_8" style="width:100px; height:50px; left: 220px; top: 590px; position:absolute;">
+
+        <img src="../map_png/8.png"  id="block_9" style="width:100px; height:50px; left: 220px; top: 530px; position:absolute;">
+        <img src="../map_png/9.png"  id="block_10" style="width:100px; height:50px; left: 220px; top: 470px; position:absolute;">
+        <img src="../map_png/10.png" id="block_11" style="width:100px; height:50px; left: 220px; top: 410px; position:absolute;">
+        <img src="../map_png/11.png" id="block_12" style="width:100px; height:50px; left: 220px; top: 350px; position:absolute;">
+        <img src="../map_png/12.png" id="block_13" style="width:100px; height:50px; left: 220px; top: 290px; position:absolute;">
+        <img src="../map_png/13.png" id="block_14" style="width:100px; height:50px; left: 220px; top: 230px; position:absolute;">
+        <img src="../map_png/14.png" id="block_15" style="width:100px; height:50px; left: 220px; top: 170px; position:absolute;">
+        <img src="../map_png/15.png" id="block_16" style="width:100px; height:50px; left: 220px; top: 110px; position:absolute;">
+
+        <img src="../map_png/aa.png" id="block_17" style="width:100px; height:50px; left: 220px; top: 50px; position:absolute;">
+
+        <img src="../map_png/16.png" id="block_18" style="width:100px; height:50px; left: 330px; top: 50px; position:absolute;">
+        <img src="../map_png/17.png" id="block_19" style="width:100px; height:50px; left: 440px; top: 50px; position:absolute;">
+        <img src="../map_png/18.png" id="block_20" style="width:100px; height:50px; left: 550px; top: 50px; position:absolute;">
+        <img src="../map_png/19.png" id="block_21" style="width:100px; height:50px; left: 660px; top: 50px; position:absolute;">
+        <img src="../map_png/20.png" id="block_22" style="width:100px; height:50px; left: 770px; top: 50px; position:absolute;">
+        <img src="../map_png/21.png" id="block_23" style="width:100px; height:50px; left: 880px; top: 50px; position:absolute;">
+        <img src="../map_png/22.png" id="block_24" style="width:100px; height:50px; left: 990px; top: 50px; position:absolute;">
+
+        <img src="../map_png/cc.png" id="block_25" style="width:100px; height:50px; left: 1100px; top: 50px; position:absolute;">
+
+        <img src="../map_png/23.png" id="block_26" style="width:100px; height:50px; left: 1100px; top: 110px; position:absolute;">
+        <img src="../map_png/24.png" id="block_27" style="width:100px; height:50px; left: 1100px; top: 170px; position:absolute;">
+        <img src="../map_png/25.png" id="block_28" style="width:100px; height:50px; left: 1100px; top: 230px; position:absolute;">
+        <img src="../map_png/26.png" id="block_29" style="width:100px; height:50px; left: 1100px; top: 290px; position:absolute;">
+        <img src="../map_png/27.png" id="block_30" style="width:100px; height:50px; left: 1100px; top: 350px; position:absolute;">
+        <img src="../map_png/28.png" id="block_31" style="width:100px; height:50px; left: 1100px; top: 410px; position:absolute;">
+        <img src="../map_png/29.png" id="block_32" style="width:100px; height:50px; left: 1100px; top: 470px; position:absolute;">
+        <img src="../map_png/30.png" id="block_33" style="width:100px; height:50px; left: 1100px; top: 530px; position:absolute;">
+
+        <div class="dice"> 
+            <img id="img_dice" class = "pic_dice"  src="../dice_png/1.png" style="width:260px; height:260px; left: 495px; top: 230px; position: absolute;">
+            <button class = "btn btn-outline-success" id = "" style="border-color: rgb(0, 142, 26); width:100px; height:50px; left: 740px; top: 290px; position: absolute; background-color: rgb(240, 117, 80); color: white; font-size: 1.1em;">命運</button> 
+            <button class = "btn btn-outline-secondary" id = "" style="border-color: rgb(0, 142, 26); width:100px; height:50px; left: 740px; top: 370px; position: absolute; background-color: rgb(120, 173, 71); color: white; font-size: 1.1em;">機會</button>
+        </div>
+        <button class = "exit" id = "btn_exit_game">Exit</button>
+
+        <img src="../character_png/角色1掛角.gif" style="width:100px; left: 1100px; top: 530px; position:absolute;" id="game_character">
+        <img src="../character_png/電腦.gif" style="width:100px; left: 1100px; top: 530px; position:absolute;" id="computer_character">
+
+    </body>
+</html>

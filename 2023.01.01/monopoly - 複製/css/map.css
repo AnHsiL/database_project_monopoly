@@ -1,0 +1,41 @@
+body{
+    /* background-color: rgba(0, 0, 0, 0.104);
+    background-blend-mode: multiply; */
+    background-image: url(../3.JPG);
+
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: 100%;
+}
+#map{
+    margin-left: 15px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.info img{
+    width: 500px; 
+    height: 300px; 
+    left: 460px; 
+    top: 195px; 
+    position:absolute; 
+    background-color:pink;
+}
+
+.exit{
+    position:absolute;
+    left: 1210px;
+    top: 45px;
+    border-radius: 50%;
+    color: rgb(102, 0, 0);
+    background-color: rgb(252, 216, 216);
+    font-size: 1.0em;
+    width: 65px;
+    height: 65px;
+    border: none;
+    font-weight: bold;
+}
