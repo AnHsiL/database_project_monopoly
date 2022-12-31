@@ -146,21 +146,21 @@ $(document).ready(function() {
                 });
             }
         });
-        $("#player1").click(function(){
-            let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-            content = b+ "<em>財產</em>:" + player.asset + "萬<br><em>名下房地產</em>:<br>";
-            for(let i = 0; i < player.house.length; i++) content +=  player.house[i] + "<br>";
-            content += "</div>";
-            $("#player1_info").html(content);
-        });
-        $("#player2").click(function(){
-            let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-            content = b+ "<em>財產</em>:" +  + computer.asset + "萬<br><em>名下房地產</em>:<br>";
-            for(let i = 0; i < computer.house.length; i++) content +=  computer.house[i] + "<br>";
-            content += "</div>";
-            $("#player2_info").html(content);
-        });
     }
+    $("#player1").click(function(){
+        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+        content = b+ "<em>財產</em>:" + player.asset + "萬<br><em>名下房地產</em>:<br>";
+        for(let i = 0; i < player.house.length; i++) content +=  player.house[i] + "<br>";
+        content += "</div>";
+        $("#player1_info").html(content);
+    });
+    $("#player2").click(function(){
+        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+        content = b+ "<em>財產</em>:" +  + computer.asset + "萬<br><em>名下房地產</em>:<br>";
+        for(let i = 0; i < computer.house.length; i++) content +=  computer.house[i] + "<br>";
+        content += "</div>";
+        $("#player2_info").html(content);
+    });
 });
 
 function gameStart(){
