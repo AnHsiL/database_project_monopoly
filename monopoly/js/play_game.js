@@ -119,7 +119,7 @@ function playerMove(step){
             title: "發錢啦!",
             text: "經過原點獎勵 "+passStartMoney+" 元"
         }).then(()=>{
-            player.asset += 50000;
+            player.asset += passStartMoney;
             for(let i = 0; i < nStep; i++){
                 setTimeout(function(){ 
                     $("#game_character").animate({top:space[i][1], left:space[i][0]}, "slower");
@@ -147,7 +147,7 @@ function computerMove(step){
                 $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
             }, 1500 + 100 * (i - computer.location));
         }
-        computer.asset += 50000;
+        computer.asset += passStartMoney;
         for(let i = 0; i < nStep; i++){
             setTimeout(function(){ 
                 $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
