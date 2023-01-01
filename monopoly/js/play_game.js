@@ -169,7 +169,36 @@ function blockAction(blockLocation, who){
             console.log("kk " + blockLocation);
             res = JSON.parse(res);
             if (res.state == 200) {
-                if(notHaveOwner(res.data)){
+                if(res.data.name=="休息一下"){
+                    if(who=='P'){
+                        player.stopTurn ++;
+                        swal.fire({
+                            title: res.data.name,
+                            html: '<p>'+ res.data.discription +'</p>\
+                                    <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                    <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                        休息一下吧~ (休息一回合)<br>\
+                                    </p>',
+                            confirmButtonColor: 'rgb(105, 187, 183)',
+                            timer: 5000,
+                        });
+                    }else{
+                        computer.stopTurn ++;
+                        /*swal.fire({
+                            title: res.data.name,
+                            html: '<p>'+ res.data.discription +'</p>\
+                                    <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                    <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                        休息一下吧~ (休息一回合)<br>\
+                                    </p>',
+                            confirmButtonColor: 'rgb(105, 187, 183)',
+                            timer: 5000,
+                        });*/
+                    }
+                }
+                else if(res.data.name == "飲料店"){}
+                else if(res.data.name == "可愛的家"){}
+                else if(notHaveOwner(res.data)){
                     if(who == 'P'){
                         swal.fire({
                             title: "是否要購買?",
