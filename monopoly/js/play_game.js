@@ -119,7 +119,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:250px; height:250px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 休息一下吧~ (休息一回合)<br>\
                             </p>',
@@ -148,16 +148,16 @@ $(document).ready(function() {
         });
     }
     $("#player1").click(function(){
-        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-        content = b+ "<em>財產</em>:" + player.asset + "萬<br><em>名下房地產</em>:<br>";
-        for(let i = 0; i < player.house.length; i++) content +=  player.house[i] + "<br>";
+        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4; text-align: left;"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+        content = b+ "player: <br><br><em>財產</em>&nbsp;:&nbsp;&nbsp;" + player.asset + "萬<br><em>名下房地產</em>&nbsp;:&nbsp;&nbsp;<br>";
+        for(let i = 0; i < player.house.length; i++) content +=  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + player.house[i] + "<br>";
         content += "</div>";
         $("#player1_info").html(content);
     });
     $("#player2").click(function(){
-        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-        content = b+ "<em>財產</em>:" +  + computer.asset + "萬<br><em>名下房地產</em>:<br>";
-        for(let i = 0; i < computer.house.length; i++) content +=  computer.house[i] + "<br>";
+        let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4; text-align: left;"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
+        content = b+ "computer: <br><br><em>財產</em>&nbsp;:&nbsp;&nbsp;" +  + computer.asset + "萬<br><em>名下房地產</em>&nbsp;:&nbsp;&nbsp;<br>";
+        for(let i = 0; i < computer.house.length; i++) content +=  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + computer.house[i] + "<br>";
         content += "</div>";
         $("#player2_info").html(content);
     });
@@ -166,7 +166,7 @@ $(document).ready(function() {
 function gameStart(){
     if(isComputerTurn){
         swal.fire({
-            title: "電腦的回合",
+            text: "電腦的回合",
             confirmButtonColor: 'rgb(123, 171, 231)'
         }).then(() => {
             computerMove(rollongDice());
@@ -174,7 +174,7 @@ function gameStart(){
     }
     else {
         swal.fire({
-            title: "玩家的回合",
+            text: "玩家的回合",
             confirmButtonColor: 'rgb(123, 171, 231)'
         }).then(() => {
             player.location = playerMove(rollongDice());
@@ -253,18 +253,20 @@ function blockAction(blockLocation){
     if(notHaveOwner(blockLocation)){
         swal.fire({
             title: "是否要購買?",
-            text: "名稱:  "+ asset[blockLocation].name +"，價值: " + asset[blockLocation].price,
+            text: "",
+            html: '<p>名稱:  '+ asset[blockLocation].name +'，價值: ' + asset[blockLocation].price + ' </p><img src="../map_png/'+asset[blockLocation].name+'.png" style="width:50%; ">',
             confirmButtonText: '是',
             confirmButtonColor: 'rgb(105, 187, 183)',
             showCancelButton: true,
             cancelButtonText: '否',
+            width: "30%"
         }).then((result) => {
             if (result.isConfirmed) {
                 if(isAssetLargerThan(player, asset[blockLocation].price))
                     trade(player, blockLocation);
                 else {
                     swal.fire({
-                        title: "金額不足以購買",
+                        text: "金額不足以購買",
                         icon: "danger"
                     })
                 }
@@ -290,7 +292,7 @@ function blockAction(blockLocation){
                     upgrade(player, blockLocation);
                 else {
                     swal.fire({
-                        title: "金額不足以升級",
+                        text: "金額不足以升級",
                         icon: "danger"
                     })
                 }
@@ -366,7 +368,7 @@ function checkwin(){
 function gameTerminate(){
 
     swal.fire({
-        title: "確定要離開嗎?",
+        text: "確定要離開嗎?",
         confirmButtonText: '確認',
         confirmButtonColor: 'rgb(246, 147, 140)',
         showCancelButton: true,
