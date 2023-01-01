@@ -74,6 +74,9 @@ body{
 .swal2-modal .swal2-title {
     font-size: 1.5em;
 }
+.swal2-modal .swal2-text {
+    padding: 10px 10px 10px 20px;
+}
 .swal2-modal button {
     padding: 6px 15px;
 }
