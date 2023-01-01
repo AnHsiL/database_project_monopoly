@@ -119,7 +119,7 @@ $(document).ready(function() {
                 swal.fire({
                     title: asset[i].name,
                     html: '<p>'+ asset[i].discription +'</p>\
-                            <img src="../map_png/'+asset[i].name+'.png"; style="width:200px; height:200px">\
+                            <img src="../map_png/'+asset[i].name+'.png"; style="width:250px; height:250px">\
                             <p style="text-align: center; font-size: 18px; padding:10px" >\
                                 休息一下吧~ (休息一回合)<br>\
                             </p>',
@@ -253,11 +253,13 @@ function blockAction(blockLocation){
     if(notHaveOwner(blockLocation)){
         swal.fire({
             title: "是否要購買?",
-            text: "名稱:  "+ asset[blockLocation].name +"，價值: " + asset[blockLocation].price,
+            text: "",
+            html: '<p>名稱:  '+ asset[blockLocation].name +'，價值: ' + asset[blockLocation].price + ' </p><img src="../map_png/'+asset[blockLocation].name+'.png" style="width:50%; ">',
             confirmButtonText: '是',
             confirmButtonColor: 'rgb(105, 187, 183)',
             showCancelButton: true,
             cancelButtonText: '否',
+            width: "30%"
         }).then((result) => {
             if (result.isConfirmed) {
                 if(isAssetLargerThan(player, asset[blockLocation].price))
