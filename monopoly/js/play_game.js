@@ -214,7 +214,7 @@ function playerMove(step){
             title: "發錢啦!",
             text: "經過原點獎勵 "+passStartMoney+" 元"
         }).then(()=>{
-            player.asset += 50000;
+            player.asset += passStartMoney;
             for(let i = 0; i < nStep; i++){
                 setTimeout(function(){ 
                     $("#game_character").animate({top:space[i][1], left:space[i][0]}, "slower");
@@ -309,7 +309,7 @@ function playerAction(blockLocation){
                 當前土地等級:&nbsp;'+ asset[blockLocation].grade + '<br>\
                 當前土地價值:&nbsp;'+ asset[blockLocation].price + '<br>\
                 升級費用為:&nbsp;" '+ asset[blockLocation].price * upgradeRate +'</p>\
-                <p style="font-size: 0.8em">目前剩餘財產:&nbsp;'+ player.asset +'&nbsp;元</p>',
+                <p style="text-align: left; font-size: 0.8em">目前剩餘財產:&nbsp;'+ player.asset +'&nbsp;元</p>',
             confirmButtonText: '是',
             confirmButtonColor: 'rgb(105, 187, 183)',
             showCancelButton: true,
