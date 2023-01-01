@@ -304,12 +304,12 @@ function playerAction(blockLocation){
     else if(isMyBlock(player, blockLocation)){          // 自己的地: 可升級
         swal.fire({
             title: "是否要升級?",
-            html: '<p style="text-align: left; font-size: 18px; padding:10px" >\
+            html: '<p style="text-align: left; font-size: 1em; padding:10px" >\
                 名稱:&nbsp;"'+ asset[blockLocation].name + '<br>\
-                當前土地等級:&nbsp;'+ asset[i].grade + '<br>\
-                當前土地價值:&nbsp;'+ asset[i].price + '<br>\
-                升級費用為:&nbsp;" '+ asset[blockLocation].price * upgradeRate +'<br>\
-            </p>',
+                當前土地等級:&nbsp;'+ asset[blockLocation].grade + '<br>\
+                當前土地價值:&nbsp;'+ asset[blockLocation].price + '<br>\
+                升級費用為:&nbsp;" '+ asset[blockLocation].price * upgradeRate +'</p>\
+                <p style="font-size: 0.8em">目前剩餘財產:&nbsp;'+ player.asset +'&nbsp;元</p>',
             confirmButtonText: '是',
             confirmButtonColor: 'rgb(105, 187, 183)',
             showCancelButton: true,
