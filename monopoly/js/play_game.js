@@ -169,7 +169,7 @@ function gameStart(){
             text: "電腦的回合",
             confirmButtonColor: 'rgb(123, 171, 231)'
         }).then(() => {
-            computerMove(rollongDice());
+            computer.location = computerMove(rollongDice());
         });
     }
     else {
@@ -199,7 +199,7 @@ function playerMove(step){
         }, 1500 + 100 * (i - player.location));
     }
 
-    if(step + player.location > space.length){
+    if(step + player.location >= space.length){
         var nStep = (step + player.location) % space.length;
         for(let i = player.location; i < (step + player.location)-space.length; i++){
             setTimeout(function(){ 
@@ -208,7 +208,7 @@ function playerMove(step){
         }
         swal.fire({
             title: "發錢啦!",
-            text: "經過原點獎勵50000元"
+            text: "經過原點獎勵 "+passStartMoney+" 元"
         }).then(()=>{
             player.asset += 50000;
             for(let i = 0; i < nStep; i++){
@@ -225,29 +225,34 @@ function playerMove(step){
     return (player.location + step) % space.length;
 }
 function computerMove(step){
-
-    if(step + computer.location > space.length){
-        for(let i = computer.location; i < space.length; i++){
-            setTimeout(function(){ 
-                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
-            }, 1500 + 100 * (i - computer.location));
-        }
-        computer.asset += 50000;
-        for(let i = 0; i < step + computer.location - space.length; i++){
-            setTimeout(function(){ 
-                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
-            }, 1500 + 100 * i);
-        }
-    }
-    else {
-        for(let i = computer.location; i < step + computer.location; i++){
-            setTimeout(function(){ 
-                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
-            }, 1500 + 100 * (i - computer.location));
-        }
-    }
-    computer.location = (computer.location + step) % space.length;
     isComputerTurn = false;
+
+    for(let i = computer.location; i < step + computer.location; i++){
+        setTimeout(function(){ 
+            $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
+        }, 1500 + 100 * (i - computer.location));
+    }
+
+    if(step + computer.location >= space.length){
+        var nStep = (step + computer.location) % space.length;
+        for(let i = computer.location; i < (step + computer.location)-space.length; i++){
+            setTimeout(function(){ 
+                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
+            }, 1500 + 100 * (i - computer.location));
+        }
+        swal.fire({
+            text: "電腦經過原點獲得 "+passStartMoney+" 元"
+        }).then(()=>{
+            computer.asset += 50000;
+            for(let i = 0; i < nStep; i++){
+                setTimeout(function(){ 
+                    $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
+                }, 1500 + 100 * i);
+            }
+        })
+        return nStep;
+    }
+    return (computer.location + step) % space.length;
 }
 function blockAction(blockLocation){
     if(notHaveOwner(blockLocation)){
@@ -313,19 +318,19 @@ function notHaveOwner(currLocation){
         && asset[currLocation].name != "可愛的家"
         && asset[currLocation].name != "飲料店"
         && asset[currLocation].name != "休息一下"
-        && asset[currLocation].name != "start"
+        && asset[currLocation].name != "Start"
     );
 }
 function isMyBlock(owner , currLocation){
     return asset[currLocation].owner == owner.name;
 }
 function isRivalBlock(owner , currLocation){
-    return (asset[currLocation].owner == "電腦" 
+    return (asset[currLocation].owner != owner.name
         && asset[currLocation].owner != "無"
         && asset[currLocation].name != "可愛的家"
         && asset[currLocation].name != "飲料店"
         && asset[currLocation].name != "休息一下"
-        && asset[currLocation].name != "start"
+        && asset[currLocation].name != "Start"
     );
 }
 function trade(trader, currLocation){
