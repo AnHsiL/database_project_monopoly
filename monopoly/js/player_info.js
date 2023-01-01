@@ -7,7 +7,11 @@ $(document).ready(function() {
     $("#charactor_name").html(window.sessionStorage.getItem("charactor_name"));
     $("#img").html("<img src = '../character_png/" + window.sessionStorage.getItem("img") + ".gif' alt = '角色照片'>");
 
-    $("#btn_begin_game").click(function(){
-        document.location.href = "map.html";
+    $("#btn_begin_game").click(function(){ document.location.href = "map.html"; });
+    $("#btn_logout").click(function(){
+        $.post("../php/logout.php", null, function(data, status) {
+            alert("以登出，請重新登入");
+            document.location.href = "index.html";
+        });
     });
 });
