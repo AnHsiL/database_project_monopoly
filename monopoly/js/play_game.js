@@ -184,7 +184,7 @@ function gameStart(){
             player.location = playerMove(rollongDice());
         });
         setTimeout(function() {
-            blockAction(player.location);
+            blockAction(player.location, 'P');
         }, 3900);
     }
 }
@@ -206,7 +206,7 @@ function playerMove(step){
         }, 1500 + 100 * (i - player.location));
     }
 
-    if(step + player.location > space.length){
+    if(step + player.location >= space.length){
         var nStep = (step + player.location) % space.length;
         for(let i = player.location; i < (step + player.location)-space.length; i++){
             setTimeout(function(){ 
@@ -229,59 +229,65 @@ function playerMove(step){
     return (player.location + step) % space.length;
 }
 function computerMove(step){
+    if(!player.stopTurn) isComputerTurn = false;
+    else player.stopTurn--;
 
-    if(step + computer.location > space.length){
-        for(let i = computer.location; i < space.length; i++){
+    for(let i = computer.location; i < step + computer.location; i++){
+        setTimeout(function(){ 
+            $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
+        }, 1500 + 100 * (i - computer.location));
+    }
+
+    if(step + computer.location >= space.length){
+        var nStep = (step + computer.location) % space.length;
+        for(let i = computer.location; i < (step + computer.location)-space.length; i++){
             setTimeout(function(){ 
                 $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
             }, 1500 + 100 * (i - computer.location));
         }
         computer.asset += 50000;
-        for(let i = 0; i < step + computer.location - space.length; i++){
+        for(let i = 0; i < nStep; i++){
             setTimeout(function(){ 
                 $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
             }, 1500 + 100 * i);
         }
+        return nStep;
     }
-    else {
-        for(let i = computer.location; i < step + computer.location; i++){
-            setTimeout(function(){ 
-                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
-            }, 1500 + 100 * (i - computer.location));
+    return (computer.location + step) % space.length;
+}
+function blockAction(blockLocation, who){
+    if(notHaveOwner(blockLocation)){
+        if(who == 'P'){
+            swal.fire({
+                title: "是否要購買?",
+                text: "名稱:  "+ asset[blockLocation].name +"，價值: " + asset[blockLocation].price,
+                confirmButtonText: '是',
+                confirmButtonColor: 'rgb(105, 187, 183)',
+                showCancelButton: true,
+                cancelButtonText: '否',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if(isAssetLargerThan(player, asset[blockLocation].price))
+                        trade(player, blockLocation);
+                    else {
+                        swal.fire({
+                            title: "金額不足以購買",
+                            icon: "error"
+                        })
+                    }
+                } 
+            });    
+        }else{
+            if(isAssetLargerThan(computer, asset[blockLocation].price)) trade(computer, blockLocation); 
         }
     }
-    computer.location = (computer.location + step) % space.length;
-    isComputerTurn = false;
-}
-function blockAction(blockLocation){
-    if(notHaveOwner(blockLocation)){
-        swal.fire({
-            title: "是否要購買?",
-            text: "名稱:  "+ asset[blockLocation].name +"，價值: " + asset[blockLocation].price,
-            confirmButtonText: '是',
-            confirmButtonColor: 'rgb(105, 187, 183)',
-            showCancelButton: true,
-            cancelButtonText: '否',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                if(isAssetLargerThan(player, asset[blockLocation].price))
-                    trade(player, blockLocation);
-                else {
-                    swal.fire({
-                        title: "金額不足以購買",
-                        icon: "danger"
-                    })
-                }
-            } 
-        });
-    }
-    else if(isMyBlock(player, blockLocation)){
+    else if(who=='P' && isMyBlock(player, blockLocation)){
         swal.fire({
             title: "是否要升級?",
             html: '<p style="text-align: left; font-size: 1em; padding:10px" >\
                 名稱:&nbsp;"'+ asset[blockLocation].name + '<br>\
-                當前土地等級:&nbsp;'+ asset[i].grade + '<br>\
-                當前土地價值:&nbsp;'+ asset[i].price + '<br>\
+                當前土地等級:&nbsp;'+ asset[blockLocation].grade + '<br>\
+                當前土地價值:&nbsp;'+ asset[blockLocation].price + '<br>\
                 升級費用為:&nbsp;" '+ asset[blockLocation].price * upgradeRate +'<br>\
             </p>',
             confirmButtonText: '是',
@@ -294,22 +300,35 @@ function blockAction(blockLocation){
                 else {
                     swal.fire({
                         title: "金額不足以升級",
-                        icon: "danger"
+                        icon: "error"
                     })
                 }
             } 
         });    
     }
-    else if(isRivalBlock(player, blockLocation)){
+    else if(who=='C' && isMyBlock(computer, blockLocation)){
+        if(isAssetLargerThan(computer, asset[blockLocation].price * upgradeRate)) upgrade(computer, blockLocation);
+    }
+    else if(who=='P' && isRivalBlock(computer, blockLocation)){
         swal.fire({
-            text: player.name + "付過路費 " + parseInt(asset[blockLocation].price * paymentRate * asset[blockLocation].grade) +" 元給電腦",
+            text: player.name + "付過路費 " + parseInt(asset[blockLocation].price * paymentRate * asset[blockLocation].grade) +" 元給computer",
         }).then(() => {
             payMoney(player, blockLocation);
+            checkwin();
         });
     }
-    else ;
+    else if( who=='C' && isRivalBlock(player, blockLocation)){
+        swal.fire({
+            text: computer.name + "付過路費 " + parseInt(asset[blockLocation].price * paymentRate * asset[blockLocation].grade) +" 元給player",
+        }).then(() => {
+            payMoney(computer, blockLocation);
+            checkwin();
+        });
+    }    
+    
 }
 function notHaveOwner(currLocation){
+    console.log("notHaveOwner: " + asset[currLocation].name);
     return (asset[currLocation].owner == "無" 
         && asset[currLocation].name != "可愛的家"
         && asset[currLocation].name != "飲料店"
@@ -318,10 +337,12 @@ function notHaveOwner(currLocation){
     );
 }
 function isMyBlock(owner , currLocation){
+    console.log("isMyBlock: now=" + asset[currLocation].owner + " check " + owner.name);
     return asset[currLocation].owner == owner.name;
 }
 function isRivalBlock(owner , currLocation){
-    return (asset[currLocation].owner == "電腦" 
+    console.log("currLocation: " + asset[currLocation].owner + " who: " +owner.name);
+    return (asset[currLocation].owner == owner.name
         && asset[currLocation].owner != "無"
         && asset[currLocation].name != "可愛的家"
         && asset[currLocation].name != "飲料店"
@@ -330,7 +351,7 @@ function isRivalBlock(owner , currLocation){
     );
 }
 function trade(trader, currLocation){
-    console.log(trader.name +  " " + asset[currLocation].name);
+    console.log(trader.name +  " buy " + asset[currLocation].name);
     trader.asset -= asset[currLocation].price;
     asset[currLocation].owner = trader.name;
     trader.house.push(asset[currLocation].name);
@@ -345,12 +366,10 @@ function payMoney(trader, currLocation){
     if(trader == player){
         player.asset -= parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
         computer.asset += parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
-        checkwin();
     }
     else if(trader == computer){
         computer.asset -= parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
         player.asset += parseInt(asset[currLocation].price * paymentRate * asset[currLocation].grade);
-        checkwin();
     }
 }
 function isAssetLargerThan(person, num){
@@ -373,8 +392,6 @@ function checkwin(){
                 document.location.href = "../html/player_info.html";
             }
         });
-        // let content2 = "<img src = '../img/lose.png' style = 'width: 800px;'>"
-        // $("body").html(content2);
     }
     else if(computer.asset < 0){
         swal.fire({
@@ -393,10 +410,6 @@ function checkwin(){
                 document.location.href = "../html/player_info.html";
             }
         });
-
-        // $("body").css("background-color", "coral");
-        // let content2 = "<img src = '../img/win.gif' style = 'width: 800px;'>"
-        // $("body").html(content2);
     }
 }
 function gameTerminate(){
