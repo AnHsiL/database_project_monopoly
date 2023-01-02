@@ -10,7 +10,7 @@ $(document).ready(function() {
     $("#btn_begin_game").click(function(){ document.location.href = "map.html"; });
     $("#btn_logout").click(function(){
         $.post("../php/logout.php", null, function(data, status) {
-            alert("已登出，請重新登入");
+            alert("以登出，請重新登入");
             document.location.href = "index.html";
         });
     });

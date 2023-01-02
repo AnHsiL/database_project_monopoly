@@ -5,8 +5,23 @@ let space = [
     [1100, 50],[1100, 110],[1100, 170],[1100, 230],[1100, 290],[1100, 350],[1100, 410],[1100, 470],[1100, 530]
 ];
 
-let paymentRate = 0.7;          // 過路費比率
-let upgradeRate = 1.5;          // 升級比率
+let owner_grade = [
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
+
+    {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}
+]
+
+// let paymentRate = 0.7;          // 過路費比率
+// let upgradeRate = 1.5;          // 升級比率
 let passStartMoney = 100000;    // 經過原點的錢
 
 var player = {
@@ -28,6 +43,7 @@ var isComputerTurn = false;
 
 $(document).ready(function() {
     player.location = 0;
+    setMapInfo();
     $("#img_dice").click(function(){
         console.log("start");
         gameStart();
@@ -49,9 +65,96 @@ $(document).ready(function() {
         content += "</div>";
         $("#player2_info").html(content);
     });
-    // setMapInfo();
 });
+function setMapInfo(){
 
+    for(let i = 0; i < 34; i++){
+        $("#block_"+i).click(function(){
+
+            $.ajax({
+                url: "../php/getMapInfo.php",
+                type: "POST",
+                data: {
+                    id: i+1
+                },
+                success: function(res) {
+                    res = JSON.parse(res);
+                    if (res.state == 200) {
+                        if(res.data.name == "Start"){
+                            swal.fire({
+                                title: res.data.name,
+                                html: '<p>'+ res.data.discription +'</p>\
+                                        <img src="../map_png/'+res.data.name+'.png"; style="width:200px; height:120px">\
+                                        <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                            經過可獲得&nbsp'+passStartMoney+'&nbsp元 <br>\
+                                        </p>',
+                                confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
+                                timer: 5000,
+                                background: "rgba(230, 245, 230, 0.9)",
+                            });
+                        }
+                        else if(res.data.name == "可愛的家"){
+                            swal.fire({
+                                title: res.data.name,
+                                html: '<p>'+ res.data.discription +'</p>\
+                                        <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                        <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                            (說明)<br>\
+                                        </p>',
+                                confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
+                                timer: 5000,
+                                background: "rgba(230, 245, 230, 0.9)",
+                            });
+                        }
+                        else if(res.data.name == "飲料店"){
+                            swal.fire({
+                                title: res.data.name,
+                                html: '<p>'+ res.data.discription +'</p>\
+                                        <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                        <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                            (說明)<br>\
+                                        </p>',
+                                confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
+                                timer: 3000,
+                                background: "rgba(230, 245, 230, 0.9)",
+                            });
+                        }
+                        else if(res.data.name == "休息一下"){
+                            swal.fire({
+                                title: res.data.name,
+                                html: '<p>'+ res.data.discription +'</p>\
+                                        <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                        <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                            休息一下吧~ (休息一回合)<br>\
+                                        </p>',
+                                confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
+                                timer: 5000,
+                                background: "rgba(230, 245, 230, 0.9)",
+                            });
+                        }
+                        else{
+                            swal.fire({
+                                title: res.data.name,
+                                html: '<p>'+ res.data.discription +'</p>\
+                                        <img src="../map_png/'+res.data.name+'.png" style="float: left; width:50%; height:50%; ">\
+                                        <p style="text-align: left; font-size: 1em; padding:5px; position: absolute; left: 55%; top: 35%;" >\
+                                            擁有者:&nbsp;'+ owner_grade[res.data.map_id-1].owner + '<br>\
+                                            當前土地等級:&nbsp;'+ owner_grade[res.data.map_id-1].grade + '<br>\
+                                            當前土地價值:&nbsp;'+ res.data.price + '<br>\
+                                            應繳過路費:&nbsp;&nbsp;&nbsp;&nbsp;'+ parseInt(res.data.paymentRate) + '<br>\
+                                        </p>',
+                                confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
+                                timer: 5000,
+                                background: "rgba(230, 245, 230, 0.9)",
+                            });
+                        }
+                    }
+                }
+            });
+
+        });
+    }
+}
 function gameStart(){
     if(isComputerTurn){
         swal.fire({
@@ -61,7 +164,7 @@ function gameStart(){
             computer.location = computerMove(rollongDice());
         });
         setTimeout(function() {
-            computerAction(computer.location);
+            blockAction(computer.location, 'C');
         }, 3900);
     }
     else {
@@ -72,7 +175,7 @@ function gameStart(){
             player.location = playerMove(rollongDice());
         });
         setTimeout(function() {
-            playerAction(player.location);
+            blockAction(player.location, 'P');
         }, 3900);
     }
 }
@@ -133,241 +236,174 @@ function computerMove(step){
                 $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
             }, 1500 + 100 * (i - computer.location));
         }
-        swal.fire({
-            text: "電腦經過原點獲得 "+ passStartMoney +" 元"
-        }).then(()=>{
-            computer.asset += 50000;
-            for(let i = 0; i < nStep; i++){
-                setTimeout(function(){ 
-                    $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
-                }, 1500 + 100 * i);
-            }
-        });
+        computer.asset += passStartMoney;
+        for(let i = 0; i < nStep; i++){
+            setTimeout(function(){ 
+                $("#computer_character").animate({top:space[i][1], left:space[i][0]}, "slower");
+            }, 1500 + 100 * i);
+        }
         return nStep;
     }
     return (computer.location + step) % space.length;
 }
-function playerAction(blockLocation){
+function blockAction(blockLocation, who){
+
     $.ajax({
         url: "../php/getMapInfo.php",
         type: "POST",
         data: {
             id: blockLocation+1
         },
-        success: function(map){
-            console.log("[succ] get map data of block " + blockLocation);
-            map = JSON.parse(map);
-            console.log("map.data = " + map.data.name);
-
-            if(map.data.name == "可愛的家"){        // 可愛的家
-
-            }
-            else if(map.data.name == "飲料店"){     // 飲料店
-        
-            }
-            else if(map.data.name == "休息一下"){   // 休息一下: 下回合休息
-                player.stopTurn ++;
-                swal.fire({
-                    title: map.data.name,
-                    html: '<p>'+ map.data.discription +'</p>\
-                            <img src="../map_png/'+map.data.name+'.png"; style="width:250px; height:250px">\
-                            <p style="text-align: center; font-size: 1em; padding:10px" >\
-                                休息一下吧~ (休息一回合)<br>\
-                            </p>',
-                    confirmButtonColor: 'rgb(105, 187, 183)',
-                    timer: 5000,
-                });
-            }
-            else if(notHaveOwner(map.data)){               // 無主地: 可購買
-                swal.fire({
-                    title: "是否要購買?",
-                    html: '<p>名稱:  '+ map.data.name +'，價值: ' + map.data.price + ' </p>\
-                            <img src="../map_png/'+map.data.name+'.png" style="width:50%; ">\
-                            <p style="font-size: 0.8em">目前剩餘財產:&nbsp;'+ player.asset +'&nbsp;元</p>',
-                    confirmButtonText: '是',
-                    confirmButtonColor: 'rgb(105, 187, 183)',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                    width: "30%"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if(isAssetLargerThan(player, map.data.price))
-                            trade(player, map.data);
-                        else {
-                            swal.fire({
-                                text: "金額不足以購買",
-                                icon: "error",
-                                confirmButtonColor: 'rgb(123, 171, 231)',
-                            })
-                        }
-                    } 
-                }); 
-            }
-            else if(isMyBlock(player, map.data)){          // 自己的地: 可升級
-                swal.fire({
-                    title: "是否要升級?",
-                    html: '<p style="text-align: left; font-size: 1em; padding:10px" >\
-                        名稱:&nbsp;"'+ map.data.name + '<br>\
-                        當前土地等級:&nbsp;'+ map.data.grade + '<br>\
-                        當前土地價值:&nbsp;'+ map.data.price + '<br>\
-                        升級費用為:&nbsp;" '+ map.data.price * upgradeRate +'</p>\
-                        <p style="font-size: 0.8em">目前剩餘財產:&nbsp;'+ player.asset +'&nbsp;元</p>',
-                    confirmButtonText: '是',
-                    confirmButtonColor: 'rgb(105, 187, 183)',
-                    showCancelButton: true,
-                    cancelButtonText: '否',
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        if(isAssetLargerThan(player, map.data.price * upgradeRate))
-                            upgrade(player, map.data);
-                        else {
-                            swal.fire({
-                                text: "金額不足以升級",
-                                icon: "error",
-                                confirmButtonColor: 'rgb(123, 171, 231)',
-                            })
-                        }
-                    } 
-                });
-            }
-            else if(isRivalBlock(player, map.data)){
-                swal.fire({
-                    text: player.name + " 付過路費 " + parseInt(map.data.price * paymentRate * asset[blockLocation].grade) + " 元給 " + computer.name,
-                }).then(() => {
-                    payMoney(player, map.data);
-                    checkwin();
-                });
-            }   
-        },
-        error(err){
-            console.log("[err] cannot get map data of block "+ blockLocation);
-            console.log(err);
-        }
-    });
-}
-function computerAction(blockLocation){
-    $.ajax({
-        url: "../php/getMapInfo.php",
-        type: "POST",
-        data: {
-            id: blockLocation+1
-        },
-        success: function(map){
-            console.log("[succ] get map data of block " + blockLocation);
-            map = JSON.parse(map);
-            if(map.data.name == "可愛的家"){        // 可愛的家
-
-            }
-            else if(map.data.name == "飲料店"){     // 飲料店
-        
-            }
-            else if(map.data.name == "休息一下"){   // 休息一下: 下回合休息
-                computer.stopTurn ++;
-                swal.fire({
-                    text: computer.name + " 休息一回合",
-                    confirmButtonColor: 'rgb(105, 187, 183)',
-                    timer: 5000,
-                });
-            }
-            else if(notHaveOwner(map.data)){               // 無主地: 可購買
-                if(isAssetLargerThan(computer, map.data.price)) {
-                    trade(computer, map.data); 
-                    swal.fire({
-                        text: computer.name + " 購買了" + map.data.name ,
-                        confirmButtonColor: 'rgb(105, 187, 183)',
-                    });  
+        success: function(res) {
+            console.log("kk " + blockLocation);
+            res = JSON.parse(res);
+            if (res.state == 200) {
+                if(res.data.name=="休息一下"){
+                    if(who=='P'){
+                        player.stopTurn ++;
+                        swal.fire({
+                            title: res.data.name,
+                            html: '<p>'+ res.data.discription +'</p>\
+                                    <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                    <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                        休息一下吧~ (休息一回合)<br>\
+                                    </p>',
+                            confirmButtonColor: 'rgb(105, 187, 183)',
+                            timer: 5000,
+                        });
+                    }else{
+                        computer.stopTurn ++;
+                        /*swal.fire({
+                            title: res.data.name,
+                            html: '<p>'+ res.data.discription +'</p>\
+                                    <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
+                                    <p style="text-align: center; font-size: 1em; padding:10px" >\
+                                        休息一下吧~ (休息一回合)<br>\
+                                    </p>',
+                            confirmButtonColor: 'rgb(105, 187, 183)',
+                            timer: 5000,
+                        });*/
+                    }
                 }
-            }
-            else if(isMyBlock(player, map.data)){          // 自己的地: 可升級
-                if(isAssetLargerThan(computer, map.data.price * upgradeRate)){
-                    upgrade(computer, map.data);
+                else if(res.data.name == "飲料店"){}
+                else if(res.data.name == "可愛的家"){}
+                else if(notHaveOwner(res.data)){
+                    if(who == 'P'){
+                        swal.fire({
+                            title: "是否要購買?",
+                            text: "名稱:  "+ res.data.name +"，價值: " + res.data.price,
+                            confirmButtonText: '是',
+                            confirmButtonColor: 'rgb(105, 187, 183)',
+                            showCancelButton: true,
+                            cancelButtonText: '否',
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                if(isAssetLargerThan(player, res.data.price))
+                                    trade(player, res.data);
+                                else {
+                                    swal.fire({
+                                        title: "金額不足以購買",
+                                        icon: "error"
+                                    })
+                                }
+                            } 
+                        });    
+                    }else{
+                        if(isAssetLargerThan(computer, res.data.price)) trade(computer, res.data); 
+                    }
+                }
+                else if(who=='P' && isMyBlock(player, res.data)){
                     swal.fire({
-                        text: computer.name + " 升級了" + map.data.name,
+                        title: "是否要升級?",
+                        html: '<p style="text-align: left; font-size: 1em; padding:10px" >\
+                            名稱:&nbsp;"'+ res.data.name + '<br>\
+                            當前土地等級:&nbsp;'+ owner_grade[res.data.map_id-1].grade + '<br>\
+                            當前土地價值:&nbsp;'+ res.data.price + '<br>\
+                            升級費用為:&nbsp;" '+ res.data.upgradeRate +'<br>\
+                        </p>',
+                        confirmButtonText: '是',
                         confirmButtonColor: 'rgb(105, 187, 183)',
-                    });  
-                } 
+                        showCancelButton: true,
+                        cancelButtonText: '否',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if(isAssetLargerThan(player, res.data.upgradeRate)) upgrade(player, res.data);
+                            else {
+                                swal.fire({
+                                    title: "金額不足以升級",
+                                    icon: "error"
+                                })
+                            }
+                        } 
+                    });    
+                }
+                else if(who=='C' && isMyBlock(computer, res.data)){
+                    if(isAssetLargerThan(computer, res.data.upgradeRate)) upgrade(computer, res.data);
+                }
+                else if(who=='P' && isRivalBlock(computer, res.data)){
+                    swal.fire({
+                        text: player.name + "付過路費 " + parseInt(res.data.paymentRate * owner_grade[res.data.map_id-1].grade) +" 元給computer",
+                    }).then(() => {
+                        payMoney(player, res.data);
+                        checkwin();
+                    });
+                }
+                else if( who=='C' && isRivalBlock(player, res.data)){
+                    swal.fire({
+                        text: computer.name + "付過路費 " + parseInt(res.data.paymentRate * owner_grade[res.data.map_id-1].grade) +" 元給player",
+                    }).then(() => {
+                        payMoney(computer, res.data);
+                        checkwin();
+                    });
+                }    
             }
-            else if(isRivalBlock(player, map.data)){
-                swal.fire({
-                    text: computer.name + " 付過路費 " + parseInt(asset[blockLocation].price * paymentRate * asset[blockLocation].grade) +" 元給 "+ player.name,
-                }).then(() => {
-                    payMoney(computer, map.data);
-                    checkwin();
-                });
-            }   
-        },
-        error(err){
-            console.log("[err] cannot get map data of block "+ blockLocation);
-            console.log(err);
         }
-    });
+    });    
 }
-function notHaveOwner(mapData){
-    console.log("[notHaveOwner]: " + mapData.name);
-    return (mapData.owner == "無" 
-        && mapData.name != "可愛的家"
-        && mapData.name != "飲料店"
-        && mapData.name != "休息一下"
-        && mapData.name != "Start"
+function notHaveOwner(currLocation){
+    console.log("notHaveOwner: " + currLocation.name);
+    return (owner_grade[currLocation.map_id-1].owner == "無" 
+        && currLocation.name != "可愛的家"
+        && currLocation.name != "飲料店"
+        && currLocation.name != "休息一下"
+        && currLocation.name != "Start"
     );
 }
-function isMyBlock(owner , mapData){
-    console.log("[isMyBlock]: " + mapData.name);
-    return mapData.owner == owner.name;
+function isMyBlock(owner , currLocation){
+    console.log("isMyBlock: now=" + owner_grade[currLocation.map_id-1].owner + " check " + owner.name);
+    return owner_grade[currLocation.map_id-1].owner == owner.name;
 }
-function isRivalBlock(owner , mapData){
-    console.log("[currLocation]: " + mapData.owner + " who: " +owner.name);
-    return (mapData.owner != owner.name
-        && mapData.owner != "無"
-        && mapData.name != "可愛的家"
-        && mapData.name != "飲料店"
-        && mapData.name != "休息一下"
-        && mapData.name != "Start"
+function isRivalBlock(owner , currLocation){
+    console.log("currLocation: " + owner_grade[currLocation.map_id-1].owner + " who: " +owner.name);
+    return (owner_grade[currLocation.map_id-1].owner == owner.name
+        && owner_grade[currLocation.map_id-1].owner != "無"
+        && currLocation.name != "可愛的家"
+        && currLocation.name != "飲料店"
+        && currLocation.name != "休息一下"
+        && currLocation.name != "Start"
     );
 }
-function trade(trader, mapData){
-    console.log("[trade]: " + trader.name +  " buy " + mapData.name);
-    trader.asset -= mapData.price;
-    mapData.owner = trader.name;
-    trader.house.push(mapData.name);
-    $.ajax({
-        url: "../php/updateMapInfo.php",
-        type: "POST",
-        data: mapData,
-        success: function(){
-            if(trader == player)
-                swal.fire("購買成功!!!","當前剩餘財產為 " + trader.asset + "元", "success");
-        },
-        error: function(err){
-            console.log("[err] trade");
-            console.log(err);
-        }
-    });
+function trade(trader, currLocation){
+    console.log(trader.name +  " buy " + currLocation.name);
+    trader.asset -= currLocation.price;
+    owner_grade[currLocation.map_id-1].owner = trader.name;
+    trader.house.push(currLocation.name);
+    //console.log(owner_grade);
+    swal.fire("Successfully purchase!!!","Your remain property is " + player.asset + "萬", "success");
 }
-function upgrade(trader, mapData){
-    trader.asset -= parseInt(mapData.price * upgradeRate * mapData.grade);
-    mapData.grade++;
-    $.ajax({
-        url: "../php/updateMapInfo.php",
-        type: "POST",
-        data: mapData,
-        success: function(){
-            swal.fire("升級成功!!!","當前剩餘財產為 " + player.asset + "元", "success");
-        },
-        error: function(err){
-            console.log("[err] trade");
-            console.log(err);
-        }
-    });
+function upgrade(trader, currLocation){
+    trader.asset -= parseInt(currLocation.upgradeRate * owner_grade[currLocation.map_id-1].grade);
+    owner_grade[currLocation.map_id-1].grade++;
+    swal.fire("Successfully upgrade!!!","Your remain property is " + player.asset + "萬", "success");
 }
-function payMoney(trader, mapData){
+function payMoney(trader, currLocation){
     if(trader == player){
-        player.asset -= parseInt(mapData.price * paymentRate * mapData.grade);
-        computer.asset += parseInt(mapData.price * paymentRate * mapData.grade);
+        player.asset -= parseInt(currLocation.paymentRate * owner_grade[currLocation.map_id-1].grade);
+        computer.asset += parseInt(currLocation.paymentRate * owner_grade[currLocation.map_id-1].grade);
     }
     else if(trader == computer){
-        computer.asset -= parseInt(mapData.price * paymentRate * mapData.grade);
-        player.asset += parseInt(mapData.price * paymentRate * mapData.grade);
+        computer.asset -= parseInt(currLocation.paymentRate * owner_grade[currLocation.map_id-1].grade);
+        player.asset += parseInt(currLocation.paymentRate * owner_grade[currLocation.map_id-1].grade);
     }
 }
 function isAssetLargerThan(person, num){
@@ -377,18 +413,19 @@ function checkwin(){
     if(player.asset < 0){
         swal.fire({
             imageUrl: "../img/lose.png",
-            imageWidth: 1200,
+            imageWidth: 500,
             imageHeight: 300,
             confirmButtonText: '繼續遊戲',
             confirmButtonColor: 'rgb(246, 147, 140)',
             showCancelButton: true,
             cancelButtonText: '離開',
-            width: "50%"
+            background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
-            if (result.isConfirmed) 
+            if (result.isConfirmed) {
                 location.reload();
-            else
+            }else{
                 document.location.href = "../html/player_info.html";
+            }
         });
     }
     else if(computer.asset < 0){
@@ -402,10 +439,11 @@ function checkwin(){
             cancelButtonText: '離開',
             background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
-            if (result.isConfirmed) 
+            if (result.isConfirmed) {
                 location.reload();
-            else
+            }else{
                 document.location.href = "../html/player_info.html";
+            }
         });
     }
 }
@@ -417,7 +455,8 @@ function gameTerminate(){
         showCancelButton: true,
         cancelButtonText: '取消',
     }).then((result) => {
-        if (result.isConfirmed) 
+        if (result.isConfirmed) {
             document.location.href = "../html/player_info.html";
+        }
     });
 }
