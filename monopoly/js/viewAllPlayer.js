@@ -51,16 +51,19 @@ function display() {
                 td1.setAttribute("id", "check");
                 let td2 = document.createElement("td");
                 td2.appendChild(document.createTextNode(objContext.id));
+                // let td3 = document.createElement("td");
+                // td3.appendChild(document.createTextNode(objContext.identity));
                 let td3 = document.createElement("td");
-                td3.appendChild(document.createTextNode(objContext.identity));
+                td3.appendChild(document.createTextNode(objContext.name));
                 let td4 = document.createElement("td");
-                td4.appendChild(document.createTextNode(objContext.name));
+                td4.appendChild(document.createTextNode(objContext.win));
                 let td5 = document.createElement("td");
-                td5.appendChild(document.createTextNode(objContext.character_id));
+                td5.appendChild(document.createTextNode(objContext.lost));
                 let td6 = document.createElement("td");
-                td6.appendChild(document.createTextNode(objContext.win));
+                td6.appendChild(document.createTextNode(objContext.character_id));
                 let td7 = document.createElement("td");
-                td7.appendChild(document.createTextNode(objContext.lost));
+                td7.appendChild(document.createTextNode(objContext.charactor_name));
+                
 
                 td1.appendChild(input);
                 tr.appendChild(td1);
