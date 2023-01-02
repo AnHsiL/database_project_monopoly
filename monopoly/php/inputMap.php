@@ -12,21 +12,20 @@
     fclose($handle);
     $content = json_decode($content, true);
 
-    $query = "INSERT INTO map_info (map_id, name, owner, grade, price, discription) VALUES (?, ?, ?, ?, ?, ?);";
+    $query = "INSERT INTO map_info (map_id, name, price, discription, paymentRate, upgradeRate) VALUES (?, ?, ?, ?, ?, ?);";
     $stmt = $db->prepare($query);
 
-    $stmt->bind_param("issiis", $map_id, $name, $owner, $grade, $price, $discription);
+    $stmt->bind_param("isisdd", $map_id, $name, $price, $discription, $paymentRate, $upgradeRate);
     
     $idx = 1;
     foreach ($content as $key => $value) {
 
         $map_id = $idx++;
         $name = $value['name'];
-        $owner = $value['owner'];
-        $grade = $value['grade'];
         $price = $value['price'];
         $discription = $value['discription'];
-
+        $paymentRate = $value['price']*0.7;
+        $upgradeRate = $value['price']*1.5;
 
         $stmt->execute();
     }
