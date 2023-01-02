@@ -13,9 +13,7 @@
             'map_id' => $result['map_id'],
             'name' => $result['name'],
             'price' => $result['price'],
-            'discription' => $result['discription'],
-            'paymentRate' => $result['paymentRate'],
-            'upgradeRate' => $result['upgradeRate'],
+            'discription' => $result['discription']
         ];
         $outputData['state']=200;
         $outputData['message']="OK";
