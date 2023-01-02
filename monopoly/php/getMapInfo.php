@@ -12,10 +12,8 @@
         $outputData['data']= [
             'map_id' => $result['map_id'],
             'name' => $result['name'],
-            'grade' => $result['grade'],
-            'owner' => $result['owner'],
             'price' => $result['price'],
-            'discription' => $result['discription'],
+            'discription' => $result['discription']
         ];
         $outputData['state']=200;
         $outputData['message']="OK";

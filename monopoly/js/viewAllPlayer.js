@@ -3,8 +3,13 @@ $(document).ready(function() {
     $("#del_btn").click(function(){ del(); })
     $("#btn_logout").click(function(){
         $.post("../php/logout.php", null, function(data, status) {
-            alert("已登出，請重新登入");
-            document.location.href = "index.html";
+            swal.fire({
+                text: "已登出，請重新登入",
+                confirmButtonColor: 'rgb(123, 171, 231)',
+                icon: "warning"
+            }).then(()=>{
+                document.location.href = "index.html";
+            });
         });
     });
 });
