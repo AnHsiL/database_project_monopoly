@@ -3,8 +3,13 @@ $(document).ready(function() {
     $("#del_btn").click(function(){ del(); })
     $("#btn_logout").click(function(){
         $.post("../php/logout.php", null, function(data, status) {
-            alert("以登出，請重新登入");
-            document.location.href = "index.html";
+            swal.fire({
+                text: "已登出，請重新登入",
+                confirmButtonColor: 'rgb(123, 171, 231)',
+                icon: "warning"
+            }).then(()=>{
+                document.location.href = "index.html";
+            });
         });
     });
 });
@@ -51,19 +56,16 @@ function display() {
                 td1.setAttribute("id", "check");
                 let td2 = document.createElement("td");
                 td2.appendChild(document.createTextNode(objContext.id));
-                // let td3 = document.createElement("td");
-                // td3.appendChild(document.createTextNode(objContext.identity));
                 let td3 = document.createElement("td");
-                td3.appendChild(document.createTextNode(objContext.name));
+                td3.appendChild(document.createTextNode(objContext.identity));
                 let td4 = document.createElement("td");
-                td4.appendChild(document.createTextNode(objContext.win));
+                td4.appendChild(document.createTextNode(objContext.name));
                 let td5 = document.createElement("td");
-                td5.appendChild(document.createTextNode(objContext.lost));
+                td5.appendChild(document.createTextNode(objContext.character_id));
                 let td6 = document.createElement("td");
-                td6.appendChild(document.createTextNode(objContext.character_id));
+                td6.appendChild(document.createTextNode(objContext.win));
                 let td7 = document.createElement("td");
-                td7.appendChild(document.createTextNode(objContext.charactor_name));
-                
+                td7.appendChild(document.createTextNode(objContext.lost));
 
                 td1.appendChild(input);
                 tr.appendChild(td1);
@@ -79,4 +81,3 @@ function display() {
         },
     });
 }
-
