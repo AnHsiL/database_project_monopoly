@@ -18,12 +18,36 @@ let owner_grade = [
     {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, 
     {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}, {owner: "無", grade: 1}
 ];
+let destiny_card = [
+    {name: "踏破鐵鞋無覓處，得來全不費功夫", meaning:"獲得獎金 5000000 元"},
+    {name: "屋漏偏逢連夜雨", meaning:"悲劇連連，休息1回合，失去金錢 5000000 元"},
+    {name: "放歡一遇，既醉還休", meaning:"出去遊玩花了 10000 元，休息2回合"},
+    {name: "朝辭白帝彩雲間", meaning:"獲得赦免，免除一回合休息"},
+    {name: "花徑不曾緣客掃，蓬門今始為君開", meaning:"有客來訪，為你送來禮物現金 100000 元"},
+    {name: "無瑕勝玉美，至潔過冰清", meaning:"找到寶物價值 1000000 元"},
+    {name: "蘭陵美酒鬱金香，玉碗盛來琥珀光", meaning:"給對手送酒，讓他昏昏欲睡，休息1回合"},
+    {name: "苦恨年年壓金線，為他人作嫁衣裳", meaning:"隨機一塊地送給對手"},
+    {name: "夜來城外一尺雪", meaning:"大雪阻擋了你前進，休息1回合"},
+    {name: "赤日炎炎似火燒，野田禾稻半枯焦", meaning:"沒了收入，失去一半財產以過活"},
+    {name: "野火燒不盡，春風吹又生", meaning:"絕地逢生，當現金小於100000 時，獲得貴人相助 8888888 元"},
+    {name: "十年一覺揚州夢", meaning:"夢裡賺了 10000000元，可惜只是一場夢"},
+    {name: "芙蓉不及美人妝，水殿風來珠翠香", meaning:"你被美人迷了眼，失去現金 8700000 元"},
+    {name: "乾之下,坤之上。有一寶,無異相", meaning:"找到異寶，過路費漲3成"},
+    {name: "書中自有黃金屋", meaning:"回答問題"},
+    {name: "十年寒窗無人問，一舉成名天下知", meaning:"考試時間到囉!"},
+]
 
 let paymentRate = 0.7;          // 過路費比率
 let upgradeRate = 1.5;          // 升級比率
-let passStartMoney = 1000000;    // 經過原點的錢
-let chanceMoney = 5000000;       // 機會獎勵金
+let passStartMoney = 1000000;   // 經過原點的錢
+let chanceMoney = 5000000;      // 機會獎勵金
+let questionMoneyMax = 20000000;    // 問題獎勵金上限
+let questionMoneyMin = 500000;      // 問題獎勵金下限
+let questionPenalMax = 1500000;    // 問題罰金上限
+let questionPenalMin = 500000;      // 問題罰金下限
+
 let countOfBlock = 34;
+var correctAns;
 
 var player = {
     name: sessionStorage.getItem("player_name"),
@@ -42,6 +66,7 @@ var computer = {
 
 var isComputerTurn = false;
 var CanClickChance = true;
+var CanClickDestiny = 5;
 
 $(document).ready(function() {
     player.location = 0;
@@ -78,6 +103,7 @@ $(document).ready(function() {
                 showCancelButton: true,
                 cancelButtonText: '否',
                 icon: "info",
+                iconColor: "#b4d776"
             }).then((result) => {
                 if (result.isConfirmed) {
                     addNewQuestion();
@@ -85,6 +111,99 @@ $(document).ready(function() {
             }); 
         }
         else swal.fire("", "機會只有一次，不要太貪心喔", "warning");
+    });
+    $("#btn_destiny").click(function(){
+        if(CanClickDestiny > 0){
+            swal.fire({
+                title: "命運",
+                html: '<p><strong>窮達皆由命，何勞發歎聲</strong></p><p style="font-size:0.8em;">有5次抽取命運的機會，剩下次數為"'+CanClickDestiny+'"次</p><p>確定要抽取嗎?</p>',
+                confirmButtonText: '是',
+                confirmButtonColor: 'rgb(105, 187, 183)',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                icon: "info",
+                iconColor:"red",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    CanClickDestiny--;
+                    var destinyNum = Math.floor(Math.random() * (destiny_card.length + 1));
+                    swal.fire({
+                        title: destiny_card[destinyNum].name,
+                        text: destiny_card[destinyNum].meaning,
+                        icon: "info",
+                        iconColor:"#845afa"
+                    }).then(()=>{
+                        switch(destiny_card[destinyNum].name){
+                            case("踏破鐵鞋無覓處，得來全不費功夫"):
+                                player.asset += 5000000;    break;
+                            case("屋漏偏逢連夜雨"):
+                                player.stopTurn++;
+                                player.asset -= 5000000;
+                                swal.fire("","剩餘財產" + player.asset +" 元");   
+                                break;
+                            case("放歡一遇，既醉還休"):
+                                player.stopTurn+=2;
+                                player.asset -= 10000;
+                                swal.fire("","剩餘財產" + player.asset +" 元");   
+                                break;
+                            case("朝辭白帝彩雲間"):
+                                player.stopTurn--;          break;
+                            case("花徑不曾緣客掃，蓬門今始為君開"):
+                                player.asset +=100000;      break;
+                            case("無瑕勝玉美，至潔過冰清"):
+                                player.asset +=1000000;     break;
+                            case("蘭陵美酒鬱金香，玉碗盛來琥珀光"):
+                                computer.stopTurn++;        break;
+                            case("苦恨年年壓金線，為他人作嫁衣裳"):
+                                for(var i = 0; i < owner_grade.length; i++){
+                                    if(owner_grade[i].owner == player.name){
+                                        owner_grade[i].owner == computer.name;
+                                        $.ajax({
+                                            url: "../php/getMapInfo.php",
+                                            type: "POST",
+                                            data: {
+                                                id: i+1
+                                            },
+                                            success: function(res) {
+                                                map = JSON.parse(res);
+                                                swal.fire("","你失去了" + map.data.name, "warning"); 
+                                            }
+                                        });   
+                                        break;
+                                    } 
+                                }
+                                break;
+                            case("夜來城外一尺雪"):
+                                player.stopTurn++;          break;
+                            case("赤日炎炎似火燒，野田禾稻半枯焦"):
+                                player.asset /= 2;
+                                swal.fire("","剩餘財產" + player.asset +" 元");   
+                                break;        
+                            case("野火燒不盡，春風吹又生"):
+                                if(player.asset <= 100000) 
+                                    player.asset+=8888888;
+                                break;
+                            case("十年一覺揚州夢"):
+                                player.asset += 10000000;
+                                swal.fire("","目前財產" + player.asset +" 元");   
+                                player.asset -= 10000000;
+                                swal.fire("","目前財產" + player.asset +" 元");   
+                                break; 
+                            case("芙蓉不及美人妝，水殿風來珠翠香"):
+                                player.asset -= 8700000;        break;
+                            case("乾之下,坤之上。有一寶,無異相"):
+                                paymentRate *= 1.3;             break;
+                            case("書中自有黃金屋"):
+                                answerQuestion();               break;
+                            case("十年寒窗無人問，一舉成名天下知s"):
+                                answerQuestion();               break;
+                        }
+                    })
+                } 
+            }); 
+            
+        }
+        else swal.fire("", "命皆有時，已經沒機會啦!", "warning");
     });
 
 });
@@ -211,7 +330,7 @@ function rollongDice(){
     return rollongStep;
 }
 function playerMove(step){
-    if(!computer.stopTurn) isComputerTurn = true;
+    if(computer.stopTurn <= 0) isComputerTurn = true;
     else computer.stopTurn--;
 
     for(let i = player.location; i < step + player.location; i++){
@@ -243,7 +362,7 @@ function playerMove(step){
     return (player.location + step) % space.length;
 }
 function computerMove(step){
-    if(!player.stopTurn) isComputerTurn = false;
+    if(player.stopTurn <= 0) isComputerTurn = false;
     else player.stopTurn--;
 
     for(let i = computer.location; i < step + computer.location; i++){
@@ -285,10 +404,10 @@ function blockAction(blockLocation, who){
             console.log("[succ] get map data of block " + blockLocation);
             map = JSON.parse(res);
             if(map.data.name == "可愛的家"){        // 可愛的家
-
+                answerQuestion();
             }
             else if(map.data.name == "飲料店"){     // 飲料店
-        
+                answerQuestion();
             }
             else if(map.data.name == "休息一下"){   // 休息一下: 下回合休息
                 who.stopTurn++;
@@ -568,4 +687,52 @@ function updateRecord(){
             console.log("[err][updateRecord]"+err);
         }
     });
+}
+function answerQuestion(){
+    swal.fire({
+        title: "回答問題",
+        html: "<p>回答正確可獲得 "+questionMoneyMin+" ~ "+questionMoneyMax+" 元的巨額獎金!<br>"+
+                "<p>相反則會扣除"+questionPenalMin+" ~ "+questionPenalMax+" 元的巨額罰金!</p>",
+        confirmButtonText: '準備好了',
+        icon: "info",
+    }).then(()=>{
+        $.ajax({
+            url: "../php/getQuestion.php",
+            type: "POST",
+            success:function(res){
+                res = JSON.parse(res);
+                correctAns = res.data.answer;
+                swal.fire({
+                    title: "回答問題",
+                    html: "<p>問題: "+ res.data.description +"</p><br>" +
+                        '<button class="btn btn-primary" style="font-size:0.9em; width:100%; background-color: rgb(105, 187, 183);" onclick="checkA();">A. '+ res.data.option_A +'</button><br><br>' +
+                        '<button class="btn btn-primary" style="font-size:0.9em; width:100%; background-color: rgb(105, 187, 183);" onclick="checkB();">B. '+ res.data.option_B +'</button><br><br>' +
+                        '<button class="btn btn-primary" style="font-size:0.9em; width:100%; background-color: rgb(105, 187, 183);" onclick="checkC();">C. '+ res.data.option_C +'</button><br><br>' +
+                        '<button class="btn btn-primary" style="font-size:0.9em; width:100%; background-color: rgb(105, 187, 183);" onclick="checkD();">D. '+ res.data.option_D +'</button><br><br>' ,
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    icon: "question",
+                });
+            },
+            error:function(){}
+        });
+    });
+}
+function checkA(){checkAns("A");}
+function checkB(){checkAns("B");}
+function checkC(){checkAns("C");}
+function checkD(){checkAns("D");}
+
+function checkAns(ans){
+    if (ans == correctAns){
+        var questionMoney = Math.floor(Math.random() * (questionMoneyMax - questionMoneyMin + 1)) + questionMoneyMin;
+        swal.fire("回答正確!!!","獲得獎勵金額" + questionMoney + "元", "success");
+        player.asset += questionMoney;
+    }
+    else{
+        var questionPenal = Math.floor(Math.random() * (questionPenalMax - questionPenalMin + 1)) + questionPenalMin;
+        swal.fire("回答錯誤!!!","扣除金額" + questionPenal + "元", "error");
+        player.asset -= questionPenal;
+        checkwin();
+    }
 }
