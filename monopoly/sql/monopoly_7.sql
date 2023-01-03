@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- 主機： 127.0.0.1
--- 產生時間： 2022-12-19 17:16:06
--- 伺服器版本： 10.4.27-MariaDB
--- PHP 版本： 8.1.12
+-- 主機： 127.0.0.1:3307
+-- 產生時間： 2023-01-03 05:55:57
+-- 伺服器版本： 10.4.25-MariaDB
+-- PHP 版本： 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,24 +21,38 @@ SET time_zone = "+00:00";
 -- 資料庫： `monopoly`
 --
 
+DELIMITER $$
+--
+-- 函式
+--
+CREATE DEFINER=`monopoly_admin`@`%` FUNCTION `count_player` (`identity` INTEGER) RETURNS INT(11)  begin
+                    declare p_count integer;
+                    SELECT count(player_id) into p_count 
+                    FROM player 
+                    WHERE player.identity = identity;
+                    return p_count;
+                end$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- 資料表結構 `charactor`
+-- 資料表結構 `character_list`
 --
 
-CREATE TABLE `charactor` (
-  `charactor_id` int(11) NOT NULL,
+CREATE TABLE `character_list` (
+  `character_id` int(11) NOT NULL,
   `img` varchar(255) NOT NULL,
-  `charactor_name` varchar(255) NOT NULL,
-  `charactor_info` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `character_name` varchar(255) NOT NULL,
+  `character_info` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- 傾印資料表的資料 `charactor`
+-- 傾印資料表的資料 `character_list`
 --
 
-INSERT INTO `charactor` (`charactor_id`, `img`, `charactor_name`, `charactor_info`) VALUES
+INSERT INTO `character_list` (`character_id`, `img`, `character_name`, `character_info`) VALUES
 (1, '角色1掛角', '掛角', '<h3>喜愛糖葫蘆的女子</h3><p>熱情又帶點痞痞的個性<br>想引人注目<br>所以染了鮮豔的粉紅辮子<br>手裡總是拿著一串糖葫蘆</p>'),
 (2, '角色2莯沐', '莯沐', '<h3>台灣一間茶館的老闆</h3><p>曾在唐人街生活<br>在館內隨時帶著茶壺<br>個性謹慎穩重<br>但臨機應變能力不足</p>'),
 (3, '角色3特雷文', '特雷文', '<h3>俄羅斯傭兵</h3><p>喜歡小熊造型的物品<br>用烈酒醃過的肉製品<br>身上總是背著烤串<br><br></p>'),
@@ -57,17 +71,49 @@ INSERT INTO `charactor` (`charactor_id`, `img`, `charactor_name`, `charactor_inf
 CREATE TABLE `map_info` (
   `map_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `owner` varchar(255) DEFAULT NULL,
   `price` int(11) NOT NULL,
-  `toll` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `discription` varchar(225) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `map_info`
 --
 
-INSERT INTO `map_info` (`map_id`, `name`, `owner`, `price`, `toll`) VALUES
-(0, 'start', NULL, 0, 0);
+INSERT INTO `map_info` (`map_id`, `name`, `price`, `discription`) VALUES
+(1, 'Start', 50000, '又回到這裡了呢!'),
+(2, 'Gummy', 700000, '巧克力裡面包著QQ的軟糖，有誰沒吃過呢?'),
+(3, '小熊軟糖', 600000, '1個、2個、3個...黃色那位你要去哪裡?'),
+(4, 'pocky', 1200000, 'Share happiness! Pocky～分かち合うって、いいね！～'),
+(5, '維力', 800000, '同學，不好意思，可以請你坐遠一點嗎?'),
+(6, '洋芋球', 2000000, '一口咬下馬鈴薯香氣好幸福~'),
+(7, '雪餅', 3000000, '甜中帶鹹，鹹中帶甜，大人小孩都愛☆'),
+(8, 'Maltesers', 3500000, '酥脆香濃的美味巧克力球，一吃就停不了口'),
+(9, '可愛的家', 500000, '可愛的家是溫暖的小窩還是巫婆的糖果屋呢?'),
+(10, '奇多', 500000, 'cheetos!!'),
+(11, '小熊餅乾', 600000, '我的名字是March君喔! &nbsp;&nbsp;還有我!我叫華爾滋妹!'),
+(12, '旺旺仙貝', 1200000, '拜拜時總少不了它，「旺旺拜拜，真是旺旺」!'),
+(13, '浪味先', 800000, '浪~味~先~~ &nbsp;讓你快樂似神仙~~~'),
+(14, '蝦味先', 2000000, '「蝦味先，呷袂先」'),
+(15, '足球巧克力', 3000000, '足球外觀的巧克力有一個可愛的名字叫「哈哈球」'),
+(16, '新貴派', 3500000, '酥脆威化與香濃顆粒花生醬，淋上濃郁的巧克力，豐富口感，帶來滿滿正能量！'),
+(17, '洋芋片', 1500000, '你喜歡原味還是海苔味? &nbsp;&nbsp;...我喜歡蚵仔煎口味的!'),
+(18, '飲料店', 500000, '嗯...我要一杯鐵觀音拿鐵，微糖去冰'),
+(19, 'Oreo', 500000, '轉一轉，舔一舔...接下來你們會的對吧?'),
+(20, '牛肉乾', 600000, '我嚼...我嚼...'),
+(21, 'Kitkat', 1200000, 'Have a Break，Have a Kit Kat'),
+(22, '飛機餅乾', 800000, '小小的飛機，載著童年的回憶'),
+(23, '水果乾', 2000000, '很好吃!! &nbsp;除了番茄乾...噁...'),
+(24, '健達', 3000000, '牛奶巧克力加上威化外層, 含綿滑牛奶及榛果內餡。獨特口感，多重享受'),
+(25, '牛舌餅', 3500000, '香香甜甜~ &nbsp;能甜到心裡去~'),
+(26, '休息一下', 500000, '我想來一份休息套餐!!'),
+(27, '玉米濃湯棒', 500000, '濃郁的玉米濃湯味，鹹鹹甜甜好刷嘴'),
+(28, '棒棒糖', 600000, '哇哈哈--我的是葡萄味的!'),
+(29, '曲奇', 1200000, '我不管! &nbsp;巧克力的才是最好吃的!'),
+(30, 'Nutella', 800000, '我要致死量的醬!'),
+(31, '雪Q餅', 2000000, '你知道嗎? 我的前身是棉花糖餅乾喔'),
+(32, '爆米花', 3000000, '我就是電影院愛情片的電燈泡!'),
+(33, '七七乳加', 3500000, '嚕加嚕好呷--七七乳加'),
+(34, '果凍', 1500000, '齜溜---');
 
 -- --------------------------------------------------------
 
@@ -83,19 +129,21 @@ CREATE TABLE `player` (
   `character_id` int(11) DEFAULT NULL,
   `win` int(11) DEFAULT NULL,
   `lost` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- 傾印資料表的資料 `player`
 --
 
 INSERT INTO `player` (`player_id`, `password_hash`, `identity`, `player_name`, `character_id`, `win`, `lost`) VALUES
-('aa', '$2y$10$qhnCifpwTJoTwCl6ANn5Zu03a1wL17AfeKEi4FbrcxpiXJrIthLAi', 1, 'aa', NULL, 0, 0),
+('1', '$2y$10$LtHLX5PL.How9AxpP34lxe3QVuoVR1IqctzYZES7oH59R6jsgzDWq', 1, '林宸希', NULL, 0, 0),
+('111', '$2y$10$LIQ8HBL4v4.n9yU.qDstbOcNSrM2sVYHV2mMz7NIoWZfSFu/DT7Fm', 1, '林宸希', 2, 0, 0),
+('1111', '$2y$10$JGGm3Ex8XqWux9ChPoPCCOeEnJ6oAY.RoqNgI37EOL/VAWpJ6hGTe', 1, '林宸希', NULL, 0, 0),
 ('bb', '$2y$10$KddGWmOOQTWWDV8F1fV2GuXbgC94VqU0VipXJZRQ08SZTDgqBmvDW', 1, 'bb', NULL, 0, 0),
 ('cc', '$2y$10$nYPsAjJs3tdmzDPpCRhHnuPRbt2/pn95Kt58fYpkKB//5QYO0p.5O', 1, 'cc', NULL, 0, 0),
 ('dd', '$2y$10$3csmtBEWohS/o8VrPEWc1.vxL4b.U1C..6Ha7v9YqLqfhl.af7R3S', 1, 'dd', NULL, 0, 0),
-('ee', '$2y$10$6CxxuCcxZGEkYAQflKhgTOVt2u.ayOR1eYVi.1nctGpK4KgGKaVae', 1, 'ee', NULL, 0, 0),
-('master', '$2y$10$zoYb5/rxDdydQXlvDe9svugNkLynZwZ4jtGjL5ZsZEXvfmCoFtgHm', 0, 'master', NULL, 0, 0);
+('master', '$2y$10$zoYb5/rxDdydQXlvDe9svugNkLynZwZ4jtGjL5ZsZEXvfmCoFtgHm', 0, 'master', NULL, 0, 0),
+('sunny0809', '$2y$10$vMw97lrxzLXiLXknYCeLVOtpcQCa5yyw8LKYjZgqAwFeBlR.Qzff2', 1, '林宸希', 8, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -104,13 +152,14 @@ INSERT INTO `player` (`player_id`, `password_hash`, `identity`, `player_name`, `
 --
 
 CREATE TABLE `qustion` (
-  `question_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
   `option_A` varchar(255) NOT NULL,
   `option_B` varchar(255) NOT NULL,
   `option_C` varchar(255) NOT NULL,
   `option_D` varchar(255) NOT NULL,
-  `answer` varchar(1) NOT NULL
+  `answer` varchar(1) NOT NULL,
+  PRIMARY KEY (question_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -199,22 +248,45 @@ INSERT INTO `qustion` (`question_id`, `description`, `option_A`, `option_B`, `op
 (79, '請問「甜不辣」一詞的由來?', '味道甜而不辣', '從日本傳來的音譯', '葡萄牙語的速食之意', '西班牙語的速食之意', 'C'),
 (80, '請問台灣之光--鼎泰豐的小籠包有幾個皺褶', '18', '19', '20', '21', 'A');
 
+-- --------------------------------------------------------
+
+--
+-- 替換檢視表以便查看 `userinfo`
+-- (請參考以下實際畫面)
+--
+CREATE TABLE `userinfo` (
+`player_id` varchar(255)
+,`player_name` varchar(255)
+,`win` int(11)
+,`lost` int(11)
+,`character_id` int(11)
+,`character_name` varchar(255)
+);
+
+-- --------------------------------------------------------
+
+--
+-- 檢視表結構 `userinfo`
+--
+DROP TABLE IF EXISTS `userinfo`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`monopoly_admin`@`%` SQL SECURITY DEFINER VIEW `userinfo`  AS SELECT `player`.`player_id` AS `player_id`, `player`.`player_name` AS `player_name`, `player`.`win` AS `win`, `player`.`lost` AS `lost`, `player`.`character_id` AS `character_id`, `character_list`.`character_name` AS `character_name` FROM (`player` left join `character_list` on(`player`.`character_id` = `character_list`.`character_id`)) WHERE `player`.`identity` = 11  ;
+
 --
 -- 已傾印資料表的索引
 --
 
 --
--- 資料表索引 `charactor`
+-- 資料表索引 `character_list`
 --
-ALTER TABLE `charactor`
-  ADD PRIMARY KEY (`charactor_id`);
+ALTER TABLE `character_list`
+  ADD PRIMARY KEY (`character_id`);
 
 --
 -- 資料表索引 `map_info`
 --
 ALTER TABLE `map_info`
-  ADD PRIMARY KEY (`map_id`),
-  ADD KEY `map_owner` (`owner`);
+  ADD PRIMARY KEY (`map_id`);
 
 --
 -- 資料表索引 `player`
@@ -224,26 +296,14 @@ ALTER TABLE `player`
   ADD KEY `customer_id` (`character_id`);
 
 --
--- 資料表索引 `qustion`
---
-ALTER TABLE `qustion`
-  ADD PRIMARY KEY (`question_id`);
-
---
 -- 已傾印資料表的限制式
 --
-
---
--- 資料表的限制式 `map_info`
---
-ALTER TABLE `map_info`
-  ADD CONSTRAINT `map_owner` FOREIGN KEY (`owner`) REFERENCES `player` (`player_id`);
 
 --
 -- 資料表的限制式 `player`
 --
 ALTER TABLE `player`
-  ADD CONSTRAINT `player_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `charactor` (`charactor_id`);
+  ADD CONSTRAINT `player_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character_list` (`character_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
