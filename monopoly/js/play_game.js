@@ -568,5 +568,10 @@ function addNewQuestion(){
                 }
             });
         } 
+<<<<<<< HEAD
     });
 }
+=======
+    })
+}
+>>>>>>> f5a11a39b3f85dfa8973973302f3074887ba1fd2
