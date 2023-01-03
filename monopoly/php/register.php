@@ -44,3 +44,4 @@
 
     $outputJson = json_encode($outputData);
     echo $outputJson;
+?>

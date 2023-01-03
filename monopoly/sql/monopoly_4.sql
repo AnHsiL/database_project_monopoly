@@ -136,13 +136,14 @@ INSERT INTO `player` (`player_id`, `password_hash`, `identity`, `player_name`, `
 --
 
 CREATE TABLE `qustion` (
-  `question_id` int(11) NOT NULL,
+  `question_id` int(11) NOT NULL AUTO_INCREMENT,
   `description` varchar(255) NOT NULL,
   `option_A` varchar(255) NOT NULL,
   `option_B` varchar(255) NOT NULL,
   `option_C` varchar(255) NOT NULL,
   `option_D` varchar(255) NOT NULL,
-  `answer` varchar(1) NOT NULL
+  `answer` varchar(1) NOT NULL,
+  PRIMARY KEY (question_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -257,8 +258,8 @@ ALTER TABLE `player`
 --
 -- 資料表索引 `qustion`
 --
-ALTER TABLE `qustion`
-  ADD PRIMARY KEY (`question_id`);
+-- ALTER TABLE `qustion`
+--   ADD PRIMARY KEY (`question_id`);
 
 --
 -- 已傾印資料表的限制式
