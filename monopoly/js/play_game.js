@@ -21,28 +21,30 @@ let owner_grade = [
 
 let paymentRate = 0.7;          // 過路費比率
 let upgradeRate = 1.5;          // 升級比率
-let passStartMoney = 100000;    // 經過原點的錢
+let passStartMoney = 1000000;    // 經過原點的錢
 let countOfBlock = 34;
 
 var player = {
-    name: "player",
+    name: sessionStorage.getItem("player_name"),
     location: 0,
-    asset: 8000000,     //  初始資金 = 8000000
+    asset: 18000000,     //  初始資金 = 8000000
     house: [],
     stopTurn: 0,        // 暫停的回合數
 }
 var computer = {
     name: "computer",
     location: 0,
-    asset: 8000000,     //  初始資金 = 8000000
+    asset: 18000000,     //  初始資金 = 8000000
     house: [],
     stopTurn: 0,        // 暫停的回合數
 }
 
 var isComputerTurn = false;
+var CanClickChance = true;
 
 $(document).ready(function() {
     player.location = 0;
+    document.querySelector("#game_character").setAttribute("src", "../character_png/" + sessionStorage.getItem("img") + ".gif");
     setMapInfo();
     $("#img_dice").click(function(){
         console.log("start");
@@ -53,7 +55,7 @@ $(document).ready(function() {
     });
     $("#player1").click(function(){
         let b = '<div class="alert alert-info alert-dismissible " style = "width:500px;height:300px;z-index:4; text-align: left;"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>';
-        content = b+ "player: <br><br><em>財產</em>&nbsp;:&nbsp;&nbsp;" + player.asset + "元<br><em>名下房地產</em>&nbsp;:&nbsp;&nbsp;<br>";
+        content = b+ player.name + ": <br><br><em>財產</em>&nbsp;:&nbsp;&nbsp;" + player.asset + "元<br><em>名下房地產</em>&nbsp;:&nbsp;&nbsp;<br>";
         for(let i = 0; i < player.house.length; i++) content +=  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + player.house[i] + "<br>";
         content += "</div>";
         $("#player1_info").html(content);
@@ -64,6 +66,9 @@ $(document).ready(function() {
         for(let i = 0; i < computer.house.length; i++) content +=  "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + computer.house[i] + "<br>";
         content += "</div>";
         $("#player2_info").html(content);
+    });
+    $("#btn_chance").click(function(){
+        addNewQuestion();
     });
 
 });
@@ -305,7 +310,7 @@ function blockAction(blockLocation, who){
                         width: "30%"
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            if(isAssetLargerThan(player, map.data.price))
+                            if(isAssetLargerThan(player.asset, map.data.price))
                                 trade(player, map.data, blockLocation);
                             else {
                                 swal.fire({
@@ -317,8 +322,8 @@ function blockAction(blockLocation, who){
                         } 
                     }); 
                 }
-                else if(who == computer){
-                    if(isAssetLargerThan(computer, map.data.price)) {
+                else if(who == computer){   // computer 預留 1/3 資產付過路費
+                    if(isAssetLargerThan(computer.asset*2/3, map.data.price)) {
                         trade(computer, map.data, blockLocation); 
                         swal.fire({
                             text: computer.name + " 購買了" + map.data.name ,
@@ -344,7 +349,7 @@ function blockAction(blockLocation, who){
                         cancelButtonText: '否',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            if(isAssetLargerThan(player, updatePrice))
+                            if(isAssetLargerThan(player.asset, updatePrice))
                                 upgrade(player, map.data, blockLocation);
                             else {
                                 swal.fire({
@@ -356,8 +361,8 @@ function blockAction(blockLocation, who){
                         } 
                     });
                 }
-                else if(who == computer){
-                    if(isAssetLargerThan(computer, updatePrice))
+                else if(who == computer){   // computer 預留 1/4 資產付過路費
+                    if(isAssetLargerThan(computer.asset *3/4, updatePrice))
                         upgrade(computer, map.data, blockLocation);
                 }
             }
@@ -418,8 +423,8 @@ function upgrade(trader, mapData, currLocation){
             confirmButtonColor: 'rgb(105, 187, 183)',
         });  
 }
-function isAssetLargerThan(person, num){
-    return person.asset >= num;
+function isAssetLargerThan(asset, num){
+    return asset >= num;
 }
 function checkwin(){
     if(player.asset <= 0){
@@ -471,4 +476,52 @@ function gameTerminate(){
             document.location.href = "../html/player_info.html";
         }
     });
+}
+function addNewQuestion(){  
+    swal.fire({
+        title: '新增問題',
+        html:
+          '<div align="left">題目描述: </div><textarea id="title" class="swal2-input" style="font-size: 0.9em; height:100px; padding: 10px" required></textarea><br>' +
+          '<div class="input-group"><span>選項A:&nbsp;&nbsp;&nbsp;</span><input id="A" class="form-control" style="font-size: 0.9em;"></div><br>'+  
+          '<div class="input-group"><span>選項B:&nbsp;&nbsp;&nbsp;</span><input id="B" class="form-control" style="font-size: 0.9em;"></div><br>'+  
+          '<div class="input-group"><span>選項C:&nbsp;&nbsp;&nbsp;</span><input id="C" class="form-control" style="font-size: 0.9em;"></div><br>'+  
+          '<div class="input-group"><span>選項D:&nbsp;&nbsp;&nbsp;</span><input id="D" class="form-control" style="font-size: 0.9em;"></div><br>'+  
+          '答案:&nbsp;&nbsp;&nbsp;&nbsp;'+
+                '<input type="radio" name="ans" value="A" checked> A&nbsp;&nbsp;'+
+                '<input type="radio" name="ans" value="B"> B&nbsp;&nbsp;'+
+                '<input type="radio" name="ans" value="C"> C&nbsp;&nbsp;'+
+                '<input type="radio" name="ans" value="D"> D&nbsp;&nbsp;',
+        confirmButtonText: '新增',
+        confirmButtonColor: 'rgb(105, 187, 183)',
+        showCancelButton: true,
+        cancelButtonText: '取消',
+        width: "50%"
+    }).then((result)=>{
+        if (result.isConfirmed) {
+            var newQuestion = {};
+            newQuestion.title = document.getElementById('title').value;
+            newQuestion.A = document.getElementById('A').value;
+            newQuestion.B = document.getElementById('B').value;
+            newQuestion.C = document.getElementById('C').value;
+            newQuestion.D = document.getElementById('D').value;
+            newQuestion.ans = document.getElementsByName('ans')[0].value;
+
+            console.log("newQuestion = " + JSON.stringify(newQuestion));
+            $.ajax({
+                url: "../php/addNewQuestion.php",
+                type: "POST",
+                data: newQuestion,
+                success: function(result){
+                    let res = JSON.parse(result);
+                    if (res.state == 200) 
+                        swal.fire("新增成功!","", "success");
+                    else
+                        swal.fire("新增失敗","", "error");
+                },
+                error:function(){
+                    swal.fire("新增失敗","", "error");
+                }
+            });
+        } 
+    })
 }
