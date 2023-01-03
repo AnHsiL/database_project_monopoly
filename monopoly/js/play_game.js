@@ -22,6 +22,7 @@ let owner_grade = [
 let paymentRate = 0.7;          // 過路費比率
 let upgradeRate = 1.5;          // 升級比率
 let passStartMoney = 1000000;    // 經過原點的錢
+let chanceMoney = 5000000;       // 機會獎勵金
 let countOfBlock = 34;
 
 var player = {
@@ -68,7 +69,22 @@ $(document).ready(function() {
         $("#player2_info").html(content);
     });
     $("#btn_chance").click(function(){
-        addNewQuestion();
+        if(CanClickChance) {
+            swal.fire({
+                title: "機會",
+                html: '<p><strong>來而不可失者，時也; 蹈而不可失者，機也。</strong></p><p style="font-size:0.8em;">機會只有一次，可以貢獻題目以獲得獎勵金"'+chanceMoney+'"元</p><p>確定要使用嗎?</p>',
+                confirmButtonText: '是',
+                confirmButtonColor: 'rgb(105, 187, 183)',
+                showCancelButton: true,
+                cancelButtonText: '否',
+                icon: "info",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    addNewQuestion();
+                } 
+            }); 
+        }
+        else swal.fire("", "機會只有一次，不要太貪心喔", "warning");
     });
 
 });
@@ -428,6 +444,7 @@ function isAssetLargerThan(asset, num){
 }
 function checkwin(){
     if(player.asset <= 0){
+        sessionStorage.setItem("lost", parseInt(sessionStorage.getItem("lost"))+1);
         swal.fire({
             imageUrl: "../img/lose.png",
             imageWidth: 500,
@@ -438,6 +455,7 @@ function checkwin(){
             cancelButtonText: '離開',
             background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
+            updateRecord();
             if (result.isConfirmed) {
                 location.reload();
             }else{
@@ -446,6 +464,7 @@ function checkwin(){
         });
     }
     else if(computer.asset <= 0){
+        sessionStorage.setItem("win", parseInt(sessionStorage.getItem("win"))+1);
         swal.fire({
             imageUrl: "../img/win.gif",
             imageWidth: 500,
@@ -456,6 +475,7 @@ function checkwin(){
             cancelButtonText: '離開',
             background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
+            updateRecord();
             if (result.isConfirmed) {
                 location.reload();
             }else{
@@ -513,8 +533,11 @@ function addNewQuestion(){
                 data: newQuestion,
                 success: function(result){
                     let res = JSON.parse(result);
-                    if (res.state == 200) 
-                        swal.fire("新增成功!","", "success");
+                    if (res.state == 200) {
+                        player.asset += chanceMoney;
+                        CanClickChance = false;
+                        swal.fire("新增成功!","目前財產為: "+ player.asset, "success");
+                    }
                     else
                         swal.fire("新增失敗","", "error");
                 },
@@ -523,5 +546,26 @@ function addNewQuestion(){
                 }
             });
         } 
-    })
+    });
+}
+function updateRecord(){
+    var record = {
+    win: parseInt(sessionStorage.getItem("win")),
+    lost: parseInt(sessionStorage.getItem("lost"))
+    };
+    console.log("[chk][update record] "+ JSON.stringify(record));
+    $.ajax({
+        url: "../php/updatePlayerRecord.php",
+        type: "POST",
+        data: record,
+        success:function(res){
+            res = JSON.parse(res);
+            if(res.state == 200)
+                console.log("[succ][updateRecord]");
+            else console.log(res.state);
+        },
+        error:function(err){
+            console.log("[err][updateRecord]"+err);
+        }
+    });
 }

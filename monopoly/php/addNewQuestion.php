@@ -13,12 +13,6 @@
         $option_D = $input["D"];
         $answer = $input['ans'];
 
-        // $queryCountId = "SELECT MAX(question_id) FROM qustion";
-        // $stmtCountId = $db->prepare($queryCountId);
-        // $countAllId = $stmtCountId->fetch();
-        // echo "countAllId = ".$countAllId;
-        // $question_id = $countAllId + 1;
-
         $query = "INSERT INTO qustion (description, option_A, option_B, option_C, option_D, answer) VALUES (?, ?, ?, ?, ?, ?);";
         $stmt = $db->prepare($query);
         $result = $stmt->execute(array($description, $option_A, $option_B, $option_C, $option_D, $answer));
