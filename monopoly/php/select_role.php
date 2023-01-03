@@ -6,13 +6,11 @@
     try{
         $character_id = $input["character_id"];
 
-        $admin = 0;
-        $user = 1;
 
         session_start();
         $player_id = $_SESSION['player_id'];
 
-        $query = "SELECT img,  character_name FROM character_list WHERE character_id = ?";
+        $query = "SELECT img, character_name FROM character_list WHERE character_id = ?";
         $stmt = $db->prepare($query);
         $stmt->execute(array($character_id));
         $result = $stmt->fetchAll();
