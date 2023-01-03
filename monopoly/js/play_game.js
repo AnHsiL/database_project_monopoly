@@ -404,10 +404,10 @@ function blockAction(blockLocation, who){
             console.log("[succ] get map data of block " + blockLocation);
             map = JSON.parse(res);
             if(map.data.name == "可愛的家"){        // 可愛的家
-                answerQuestion();
+                if(who == player) answerQuestion();
             }
             else if(map.data.name == "飲料店"){     // 飲料店
-                answerQuestion();
+                if(who == player)  answerQuestion();
             }
             else if(map.data.name == "休息一下"){   // 休息一下: 下回合休息
                 who.stopTurn++;
