@@ -4,7 +4,7 @@ $(document).ready(function() {
     $("#win_count").html(window.sessionStorage.getItem("win"));
     $("#lose_count").html(window.sessionStorage.getItem("lost"));
     $("#win_percent").html(window.sessionStorage.getItem("win_percent"));
-    $("#charactor_name").html(window.sessionStorage.getItem("charactor_name"));
+    $("#charactor_name").html(window.sessionStorage.getItem("character_name"));
     $("#img").html("<img src = '../character_png/" + window.sessionStorage.getItem("img") + ".gif' alt = '角色照片'>");
 
     $("#btn_begin_game").click(function(){ document.location.href = "map.html"; });

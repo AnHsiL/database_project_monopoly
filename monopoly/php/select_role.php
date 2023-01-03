@@ -4,7 +4,7 @@
     $outputData = array();
 
     try{
-        $charactor_id = $input["charactor_id"];
+        $character_id = $input["character_id"];
 
         $admin = 0;
         $user = 1;
@@ -12,9 +12,9 @@
         session_start();
         $player_id = $_SESSION['player_id'];
 
-        $query = "SELECT img,  charactor_name FROM charactor WHERE charactor_id = ?";
+        $query = "SELECT img,  character_name FROM character_list WHERE character_id = ?";
         $stmt = $db->prepare($query);
-        $stmt->execute(array($charactor_id));
+        $stmt->execute(array($character_id));
         $result = $stmt->fetchAll();
 
         $query = "SELECT player_name, win, lost FROM player WHERE player_id = ?";
@@ -24,11 +24,11 @@
 
         $query = "UPDATE player SET character_id = ? WHERE player.player_id = ?";
         $stmt = $db->prepare($query);
-        $result3 = $stmt->execute(array($charactor_id, $player_id));
+        $result3 = $stmt->execute(array($character_id, $player_id));
 
         if (count($result) == 1 && count($result2) == 1 && $result3) {
             $outputData['img'] = $result[0]['img'];
-            $outputData['charactor_name'] = $result[0]['charactor_name'];
+            $outputData['character_name'] = $result[0]['character_name'];
             $outputData['player_id'] = $player_id;
             $outputData['player_name'] = $result2[0]['player_name'];
             $outputData['win'] = $result2[0]['win'];
