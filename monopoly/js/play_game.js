@@ -157,7 +157,7 @@ $(document).ready(function() {
                             case("苦恨年年壓金線，為他人作嫁衣裳"):
                                 for(var i = 0; i < owner_grade.length; i++){
                                     if(owner_grade[i].owner == player.name){
-                                        owner_grade[i].owner == computer.name;
+                                        owner_grade[i].owner = computer.name;
                                         $.ajax({
                                             url: "../php/getMapInfo.php",
                                             type: "POST",
