@@ -7,7 +7,7 @@
     try{
         $query= " CREATE view userInfo AS
                 SELECT player.player_id, player.player_name, player.win, player.lost, player.character_id, character_list.character_name
-                FROM player left outer JOIN character_list using(character_id)
+                FROM player left outer join character_list using(character_id)
                 WHERE player.identity = 1";
 
         $stmt = $db->query($query);
