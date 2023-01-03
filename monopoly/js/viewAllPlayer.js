@@ -93,31 +93,3 @@ function display() {
         },
     });
 }
-
-function del(){
-    let player_id = [];
-    $('input[type=checkbox]:checked').each(function(){
-        //console.log($(this).val());
-        player_id.push($(this).val());
-    });
-    console.log(player_id);
-    $.ajax({
-        url: '../php/delPlayer.php',
-        type : "POST",
-        data : {"del_arr" : player_id},
-    })
-    .done(function(data){
-        location.reload();
-    })
-}
-
-function count_player(){
-    $.ajax({
-        url: "../php/player_count.php",
-        success: function(result){
-            let c = JSON.parse(result);
-            $("#player_count").html("一共"+c.player_count+"個玩家");
-            console.log(c);
-        },
-    });
-}
