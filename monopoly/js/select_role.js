@@ -45,7 +45,7 @@ $(document).ready(function() {
         $.ajax({
             url: '../php/select_role.php',
             type: "POST",
-            data: { "charactor_id": correctRole},
+            data: { "character_id": correctRole},
             success: function(result) {
                 try{
                     let res = JSON.parse(result);
@@ -55,7 +55,7 @@ $(document).ready(function() {
                         win_percent = 0;
 
                     window.sessionStorage.setItem("img", res['img']);
-                    window.sessionStorage.setItem("charactor_name", res['charactor_name']);
+                    window.sessionStorage.setItem("character_name", res['character_name']);
                     window.sessionStorage.setItem("player_id", res['player_id']);
                     window.sessionStorage.setItem("player_name", res['player_name']);
                     window.sessionStorage.setItem("win", res['win']);
