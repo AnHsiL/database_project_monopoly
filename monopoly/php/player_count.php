@@ -5,10 +5,12 @@
     $outputData=array();
 
     try{
-        $sql = "SELECT count(player_id) as player_count FROM player WHERE identity=1";
-        $stmt = $db->query($sql);
+        $player = 1;
+        $admin = 0;
+        $sql = "select count_player($player);";
+        $stmt = $db->query($sql); 
         $result = $stmt->fetch();
-        $outputData['player_count']=$result['player_count'];
+        $outputData['player_count']=$result["count_player(1)"];
     }catch(Exception $e){
 
     }
