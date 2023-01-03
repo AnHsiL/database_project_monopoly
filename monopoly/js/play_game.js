@@ -504,7 +504,7 @@ function addNewQuestion(){
             newQuestion.B = document.getElementById('B').value;
             newQuestion.C = document.getElementById('C').value;
             newQuestion.D = document.getElementById('D').value;
-            newQuestion.ans = document.getElementsByName('ans')[0].value;
+            newQuestion.ans = $('input[name="ans"]:checked').val();
 
             console.log("newQuestion = " + JSON.stringify(newQuestion));
             $.ajax({
