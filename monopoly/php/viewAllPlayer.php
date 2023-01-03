@@ -5,7 +5,7 @@
 
 
     try{
-        $query= " CREATE view userInfo AS
+        $query= "CREATE OR replace view userInfo AS
                 SELECT player.player_id, player.player_name, player.win, player.lost, player.character_id, character_list.character_name
                 FROM player left outer join character_list using(character_id)
                 WHERE player.identity = 1";
@@ -19,7 +19,6 @@
         foreach($result as $row){
             $obj = [
                 'id' => $row['player_id'],
-                // 'identity' => $row['identity'],
                 'name' => $row['player_name'],
                 'win' => $row['win'],
                 'lost' => $row['lost'],
@@ -32,8 +31,8 @@
         $outputData['state']=200;
         $outputData['message']="OK";
 
-        $query= "DROP VIEW userInfo;";
-        $stmt = $db->query($query);
+        // $query= "DROP VIEW userInfo;";
+        // $stmt = $db->query($query);
     }catch(Exception $e){
         $outputData['state']=500;
         $outputData['message']=$e->getMessage();
