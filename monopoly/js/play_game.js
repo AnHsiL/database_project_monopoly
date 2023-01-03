@@ -238,7 +238,7 @@ function setMapInfo(){
                             html: '<p>'+ res.data.discription +'</p>\
                                     <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
                                     <p style="text-align: center; font-size: 1em; padding:10px" >\
-                                        (說明)<br>\
+                                        回答問題<br>\
                                     </p>',
                             confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
                             timer: 5000,
@@ -251,7 +251,7 @@ function setMapInfo(){
                             html: '<p>'+ res.data.discription +'</p>\
                                     <img src="../map_png/'+res.data.name+'.png"; style="width:250px; height:250px">\
                                     <p style="text-align: center; font-size: 1em; padding:10px" >\
-                                        (說明)<br>\
+                                        回答問題<br>\
                                     </p>',
                             confirmButtonColor: 'rgba(71, 112, 78, 0.695)',
                             timer: 3000,
