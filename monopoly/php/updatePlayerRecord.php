@@ -1,21 +1,18 @@
 
 <?php
+    session_start();
     include_once "db_conn.php";
     include_once "ResponseStatus.php";
     $input = $_POST;
     $outputData = array();
+    $player_id = $input['player_id']
+    $win = $input['win'];
+    $lost = $input['lost'];
 
     try{
-        $description = $input["title"];
-        $option_A = $input["A"];
-        $option_B = $input["B"];
-        $option_C = $input["C"];
-        $option_D = $input["D"];
-        $answer = $input['ans'];
-
-        $query = "INSERT INTO qustion (description, option_A, option_B, option_C, option_D, answer) VALUES (?, ?, ?, ?, ?, ?);";
+        $query = "UPDATE player SET win = ?, lost = ? WHERE player_id = ?";
         $stmt = $db->prepare($query);
-        $result = $stmt->execute(array($description, $option_A, $option_B, $option_C, $option_D, $answer));
+        $result = $stmt->execute(array($win, $lost, $player_id));
       
         if ($result === TRUE) {
             $outputData['state'] = ResponseStatusCode::$OK;
