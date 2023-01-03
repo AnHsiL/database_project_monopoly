@@ -445,7 +445,6 @@ function isAssetLargerThan(asset, num){
 function checkwin(){
     if(player.asset <= 0){
         sessionStorage.setItem("lost", parseInt(sessionStorage.getItem("lost"))+1);
-        updateRecord();
         swal.fire({
             imageUrl: "../img/lose.png",
             imageWidth: 500,
@@ -456,6 +455,7 @@ function checkwin(){
             cancelButtonText: '離開',
             background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
+            updateRecord();
             if (result.isConfirmed) {
                 location.reload();
             }else{
@@ -465,7 +465,6 @@ function checkwin(){
     }
     else if(computer.asset <= 0){
         sessionStorage.setItem("win", parseInt(sessionStorage.getItem("win"))+1);
-        updateRecord();
         swal.fire({
             imageUrl: "../img/win.gif",
             imageWidth: 500,
@@ -476,6 +475,7 @@ function checkwin(){
             cancelButtonText: '離開',
             background: "rgba(218, 234, 221, 0.858)",
         }).then((result) => {
+            updateRecord();
             if (result.isConfirmed) {
                 location.reload();
             }else{
@@ -483,28 +483,6 @@ function checkwin(){
             }
         });
     }
-}
-function updateRecord(){
-    alert("update record");
-    var record = {
-        player_id: sessionStorage.getItem("player_id"),
-        win: sessionStorage.getItem("win"),
-        lost: sessionStorage.getItem("lost")
-    };
-    console.log("[chk][update record] "+ JSON.stringify(record));
-    $.ajax({
-        url: "../php/updatePlayerRecord.php",
-        type: "POST",
-        data: record,
-        success:function(res){
-            if(res.state == 200)
-                console.log("[succ][updateRecord]");
-            else console.log("[err][updateRecord]" + res.message);;
-        },
-        error:function(err){
-            console.log("[err][updateRecord]"+err);
-        }
-    });
 }
 function gameTerminate(){
     swal.fire({
@@ -568,10 +546,26 @@ function addNewQuestion(){
                 }
             });
         } 
-<<<<<<< HEAD
     });
 }
-=======
-    })
+function updateRecord(){
+    var record = {
+    win: parseInt(sessionStorage.getItem("win")),
+    lost: parseInt(sessionStorage.getItem("lost"))
+    };
+    console.log("[chk][update record] "+ JSON.stringify(record));
+    $.ajax({
+        url: "../php/updatePlayerRecord.php",
+        type: "POST",
+        data: record,
+        success:function(res){
+            res = JSON.parse(res);
+            if(res.state == 200)
+                console.log("[succ][updateRecord]");
+            else console.log(res.state);
+        },
+        error:function(err){
+            console.log("[err][updateRecord]"+err);
+        }
+    });
 }
->>>>>>> f5a11a39b3f85dfa8973973302f3074887ba1fd2

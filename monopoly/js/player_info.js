@@ -1,11 +1,18 @@
 $(document).ready(function() {
-    $("#player_id").html(window.sessionStorage.getItem("player_id"));
-    $("#player_name").html(window.sessionStorage.getItem("player_name"));
-    $("#win_count").html(window.sessionStorage.getItem("win"));
-    $("#lose_count").html(window.sessionStorage.getItem("lost"));
-    $("#win_percent").html(window.sessionStorage.getItem("win_percent"));
-    $("#charactor_name").html(window.sessionStorage.getItem("character_name"));
-    $("#img").html("<img src = '../character_png/" + window.sessionStorage.getItem("img") + ".gif' alt = '角色照片'>");
+    var win = parseInt(sessionStorage.getItem("win"));
+    var lost = parseInt(sessionStorage.getItem("lost"));
+    var win_percent = Math.round(win / (win + lost) *1000)/10;
+    
+    $("#player_id").html(sessionStorage.getItem("player_id"));
+    $("#player_name").html(sessionStorage.getItem("player_name"));
+    $("#win_count").html(win);
+    $("#lose_count").html(lost);
+    if(win / (win + lost))
+        $("#win_percent").html(String(win_percent)+"%");
+    else
+        $("#win_percent").html(0+"%");
+    $("#charactor_name").html(sessionStorage.getItem("character_name"));
+    $("#img").html("<img src = '../character_png/" + sessionStorage.getItem("img") + ".gif' alt = '角色照片'>");
 
     $("#btn_begin_game").click(function(){ document.location.href = "map.html"; });
     $("#btn_logout").click(function(){
