@@ -31,7 +31,7 @@ CREATE TABLE `character_list` (
   `character_id` int(11) NOT NULL,
   `img` varchar(255) NOT NULL,
   `character_name` varchar(255) NOT NULL,
-  `character_info` varchar(255) NOT NULL
+  `character_info` varchar(255) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
